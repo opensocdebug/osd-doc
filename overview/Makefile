@@ -1,11 +1,14 @@
-all: pdf
+PANDOC?=pandoc
+PANDOC_OPTIONS?=-s -S -V documentclass=scrartcl -V classoption=twoside -H ../shared/pandoc-header.tex
 
-pdf: overview.pdf
-md: generated/overview.md
+FILES=pandoc-metadata.yaml \
+      overview.md
 
-overview.pdf: overview.tex
-	pdflatex overview.tex
+EXTRA_DEP=Makefile \
+          ../shared/pandoc-header.tex
 
-generated/overview.md: overview.tex
-	pandoc -s overview.tex -o generated/overview.md
+all: specification.pdf
+
+specification.pdf: $(FILES) $(EXTRA_DEP)
+	$(PANDOC) $(PANDOC_OPTIONS) -o $@ $(FILES)
 

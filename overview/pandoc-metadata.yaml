@@ -1,15 +1,8 @@
-\documentclass{scrartcl}
-
-\title{Open System-on-Chip Debug}
-\author{Stefan Wallentowitz, ...}
-\date{}
-
-\begin{document}
-
-\maketitle
-
-\begin{abstract}
-
+---
+title: '\protect{Open System-on-Chip Debug}
+author: Stefan Wallentowitz, ...
+date:
+abstract: |
   With the ever increasing number of open source system-on-chip
   design, we see a big benefit in a unified system-on-chip debug
   infrastructure. On the one hand it is fair to say that developers
@@ -32,32 +25,3 @@
   In this article we give an overview of the the Open SoC Debug
   project and the different layers and components both on the chip and
   on the host the we plan in this project.
-\end{abstract}
-
-\section*{Introduction}
-
-\section*{Basic Debug Infrastructure}
-
-\subsection*{Physical Interface}
-
-\subsection*{Transport Layer}
-
-\subsection*{Switching Layer}
-
-\section*{Basic Host Interface}
-
-\section*{Building Blocks}
-
-\subsection*{System Description Module}
-
-\subsection*{JTAG Endpoint Module}
-
-\subsection*{Core Debug Modules}
-
-\subsection*{Core Trace Modules}
-
-\subsection*{Memory Access Modules}
-
-\subsection*{Debug Processor Modules}
-
-\end{document}
