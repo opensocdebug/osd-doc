@@ -127,25 +127,68 @@ module and a basic set of registers must exist in each module.
 
 ### `REQ_READ_REG`
 
+Reads from a register. The register size is determined by the type
+field (see below). The address is always 16-bit wide, addresses 16 bit
+and must be aligned to the register size.
+
 Word | Description
 ---- | -----------
 0 | Register Address
 
+The debug module responds with a `RESP_READ_REG` packet.
+
 ### `REQ_WRITE_REG`
 
-Word | Desription
----- | ----------
-0 | Register Address
-1 | Data
+Writes to a register. Identical to the `REQ_READ_REG` the register
+size is determined by the type field. The address is also 16-bit wide,
+addresses 16-bit and must be aligned to the register size.
+
+For 16-bit accesses the request is:
+
+ Word | Description
+ ---- | ----------
+ 0 | Register Address
+ 1 | Data
+
+For 32-bit accesses the request is:
+
+ Word | Description
+ ---- | ----------
+ 0 | Register Address
+ 1 | Data[31:16]
+ 2 | Data[15:0]
+
+And for 64-bit access the request is:
+
+ Word | Description
+ ---- | -----------
+ 0 | Register Address
+ 1 | Data[63:48]
+ 2 | Data[47:32]
+ 3 | Data[31:16]
+ 4 | Data[15:0]
+
+The packet is acknowledged with a `RESP_WRITE_REG` packet.
 
 ### `REQ_READ_REG_BURST`
+
+This reads registers in a burst. Regarding the register size and
+addressing the same rules apply as for `REQ_READ_REG`.
 
 Word | Desription
 ---- | ----------
 0 | Register Address
 1 | `15`: `mode`, `14:10`: reserved, `9:0`: size
 
+`mode` is `0` for incremental bursts and `1` for same-address
+bursts. The response is a `RESP_READ_REG` packet.
+
 ### `REQ_WRITE_REG_BURST`
+
+This writes registers in burst. The same conditions as for
+`REQ_WRITE_REG` apply.
+
+16-bit registers are accessed as:
 
 Word | Desription
 ---- | ----------
@@ -155,7 +198,40 @@ Word | Desription
 .. | ..
 N+2 | Data Word N
 
+32-bit registers are accessed as:
+
+Word | Desription
+---- | ----------
+0 | Register Address
+1 | `15`: `mode`, `14:10`: reserved, `9:0`: size (N)
+2 | Data Word 0 [31:16]
+3 | Data Word 0 [15:0]
+.. | ..
+Nx2+1 | Data Word N [31:16]
+Nx2+2 | Data Word N [15:0]
+
+Similarly, 64-bit registers are accessed as:
+
+Word | Desription
+---- | ----------
+0 | Register Address
+1 | `15`: `mode`, `14:10`: reserved, `9:0`: size (N)
+2 | Data Word 0 [63:48]
+.. | ..
+5 | Data Word 0 [15:0]
+.. | ..
+Nx4+2 | Data Word N [15:0]
+
+`mode` is `0` for incremental bursts and `1` for same-address
+bursts. The write is acknowledged with a `RESP_WRITE_REG` packet.
+
 ### `RESP_READ_REG`
+
+The read response is either an empty response if there was an
+error. The error case is indicated by the type field (see below).
+
+Otherwise the data is returned (1 word for `REQ_READ_REG` and `size`
+words for `REQ_READ_BURST`), for 16-bit reads:
 
 Word | Description
 ---- | ----------
@@ -163,24 +239,34 @@ Word | Description
 .. | ..
 N | Data word N
 
+For 32-bit and 64-bit reads the same order as for REG_WRITE_BURST
+applies.
+
 ### `RESP_WRITE_REG`
 
-Word | Description
----- | ----------
- | (empty)
+A write response is always empty, but the type can also indicate an
+error.
 
 ## Debug Packet Overview
 
 The following table shows the coding 
 
-Type | Coding (six bit)
----- | ------
-`REQ_READ_REG` | `0x00`
-`REQ_WRITE_REG` | `0x01`
-`REQ_READ_REG_BURST` | `0x02`
-`REQ_WRITE_REG_BURST` | `0x03`
-`RESP_READ_REG` | `0x00`
-`RESP_WRITE_REG` | `0x01`
+ Type | Coding (six bit)
+ ---- | ----------------
+ `REQ_READ_REG` | `[5:2]` `0010`, `[1:0]` `regsize`
+ `REQ_WRITE_REG` | `[5:2]` `0011`, `[1:0]` `regsize`
+ `REQ_READ_REG_BURST` | `[5:2]` `0000`, `[1:0]` `regsize`
+ `REQ_WRITE_REG_BURST` | `[5:2]` `0001`, `[1:0]` `regsize`
+ `RESP_READ_REG` | `[5:1]` `00000`, `[0]` is `1` if an error occured, `0` else
+ `RESP_WRITE_REG` | `[5:1]` `00001`, `[0]` is `1` if an error occured, `0` else
+
+`regsize` is defined as:
+
+ `regsize` | Description
+ --------- | -----------
+ `01` | 16 bit register(s)
+ `10` | 32 bit register(s)
+ `11` | 64 bit register(s)
 
 # Debug Module Registers
 
