@@ -247,6 +247,29 @@ applies.
 A write response is always empty, but the type can also indicate an
 error.
 
+## Trace Events
+
+### `DBG_EVENT`
+
+A debug event, e.g., a trace, can be of arbitrary length and the
+content is specific to the module. For events of 3 words or less, the
+packet is defined as:
+
+ Word | Description
+ ---- | -----------
+ 0 | Debug Event Word 0
+ 1 | Debug Event Word 1 (optional)
+ 2 | Debug Event Word 2 (optional)
+
+For larger events the format is:
+
+ Word | Description
+ ---- | -----------
+ 0 | `[15:10]` reserveed, `[9:0]` size (N)
+ 1 | Debug Event Word 0
+ .. | ..
+ N+1 | Debug Event Word N
+
 ## Debug Packet Overview
 
 The following table shows the coding 
@@ -257,6 +280,7 @@ The following table shows the coding
  `REQ_WRITE_REG` | `[5:2]` `0011`, `[1:0]` `regsize`
  `REQ_READ_REG_BURST` | `[5:2]` `0000`, `[1:0]` `regsize`
  `REQ_WRITE_REG_BURST` | `[5:2]` `0001`, `[1:0]` `regsize`
+ `DBG_EVENT` | `[5:2]` `1000`, `[1:0]` `eventsize`
  `RESP_READ_REG` | `[5:1]` `00000`, `[0]` is `1` if an error occured, `0` else
  `RESP_WRITE_REG` | `[5:1]` `00001`, `[0]` is `1` if an error occured, `0` else
 
@@ -267,6 +291,15 @@ The following table shows the coding
  `01` | 16 bit register(s)
  `10` | 32 bit register(s)
  `11` | 64 bit register(s)
+
+`eventsize` is defined as:
+
+ `eventsize` | Description
+ ----------- | -----------
+ `00` | Event length: 1 word
+ `01` | Event length: 2 words
+ `10` | Event length: 3 words
+ `11` | Event length encoded in packet word 0
 
 # Debug Module Registers
 
