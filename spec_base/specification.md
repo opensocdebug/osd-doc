@@ -251,9 +251,9 @@ error.
 
 ### `DBG_EVENT`
 
-A debug event, e.g., a trace, can be of arbitrary length and the
-content is specific to the module. For events of 3 words or less, the
-packet is defined as:
+A debug event, e.g., a trace, can be of a maximum length defined by
+the debug networks maximum packet length. The content is specific to
+the module. For events of 3 words or less, the packet is defined as:
 
  Word | Description
  ---- | -----------
