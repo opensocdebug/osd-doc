@@ -1,6 +1,6 @@
 # Introduction
 
-With the ever increasing number of open source system-on-chip design,
+With the ever increasing number of open source system-on-chip designs,
 we see a big benefit in a unified system-on-chip debug
 infrastructure. On the one hand it is fair to say that developers
 usually see debug as a inevitable must that does not add some fancy
@@ -23,20 +23,6 @@ In this article we give an overview of the the Open SoC Debug project
 and the different layers and components both on the chip and on the
 host the we plan in this project.
 
-The Open Soc Debug project has been established to provide
-re-usable building blocks for system-on-chip. It provides a system
-designer to integrate the entire debugging infrastructure and use the
-standard API to debug the system.
-
-We follow both approaches to debugging:
-
- * Traditional *run-control debugging* that allows a developer to
-   connect to the system and step through the program, inspect
-   registers, etc., and
-
- * Modern *trace debugging* that generates basic trace events from the
-   hardware and software execution non-intrusively.
-
 The building blocks share common interfaces and protocols, so that
 they are easily composable, but the specifications will always allow
 highly optimized versions for a specific setup.
@@ -53,12 +39,11 @@ module specification, that contain the following parts:
 
 This is just the start that covers the very basic functionality, but
 more features will be added to the specification over the next months:
-module triggering, cross-triggers, on-chip aggregation and filtering,
-sophisticated interconnects, just to mention a few of the many ideas
-we have.
+device traces, module triggering, cross-triggers, on-chip aggregation
+and filtering, sophisticated interconnects, just to mention a few.
 
-If you are interested to give input, review our specifications or to
-join the Open SoC Debug team, please visit our website:
+If you are interested in giving input, reviewing our specifications or
+joining the Open SoC Debug team, please visit our website:
 [http://www.opensocdebug.org](http://www.opensocdebug.org)
 
 ## License
