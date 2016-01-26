@@ -1,27 +1,5 @@
 ---
-title: '\protect{Open System-on-Chip Debug}
+title: '\protect{Open System-on-Chip Debug}'
 author: Stefan Wallentowitz, ...
-date:
-abstract: |
-  With the ever increasing number of open source system-on-chip
-  design, we see a big benefit in a unified system-on-chip debug
-  infrastructure. On the one hand it is fair to say that developers
-  usually see debug as a inevitable must that does not add some fancy
-  new feature or increases performance, hence a toolbox of available
-  building blocks can easily help them. On the other hand a unified
-  infrastructure with shared interfaces eases the interoperability of
-  tools and hardware.
-
-  The goal of the Open System-on-Chip Debug infrastructure is
-  therefore to provide a repository of building blocks, glue
-  infrastructure and host software libraries for SoC debugging. We
-  therefore aim at supporting support for both run-control debugging
-  and trace debugging. While run-control debugging is well-known and
-  often used in the shape of JTAG-based debugging cables,
-  trace-debugging is the observation of a system-on-chip with trace
-  events and it gains increasing significance with multicore
-  system-on-chip due to their parallelism.
-
-  In this article we give an overview of the the Open SoC Debug
-  project and the different layers and components both on the chip and
-  on the host the we plan in this project.
+date: 'Release: first draft for reviews'
+---
