@@ -19,6 +19,12 @@ trace-debugging is the observation of a system-on-chip with trace
 events and it gains increasing significance with multicore
 system-on-chip due to their parallelism.
 
+Furthermore, it is our philosophy that debugging is much more then
+traditional functional debugging to eliminate bugs. Instead a good
+trace debug infrastructure helps with performance diagnosis. It should
+be possible to find inefficiencies or problems that do not manifest
+in a functional, but should be solved.
+
 In this article we give an overview of the the Open SoC Debug project
 and the different layers and components both on the chip and on the
 host the we plan in this project.
