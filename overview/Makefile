@@ -7,8 +7,8 @@ FILES=pandoc-metadata.yaml \
 EXTRA_DEP=Makefile \
           ../shared/pandoc-header.tex
 
-all: specification.pdf
+all: overview.pdf
 
-specification.pdf: $(FILES) $(EXTRA_DEP)
+overview.pdf: $(FILES) $(EXTRA_DEP)
 	$(PANDOC) $(PANDOC_OPTIONS) -o $@ $(FILES)
 
