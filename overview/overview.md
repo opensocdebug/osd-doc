@@ -103,6 +103,35 @@ of the scope of this project for now.
 
 ## Debug Modules
 
+The debug modules either monitor a debug module or interact with it in
+case of run-control debugging or special functionalities. On the other
+side the debug modules generally interface the debug infrastructure
+via the so called "Debug Interconnect Interface" (DII).
+
+![The generic status and control
+ interface](../images/debug_module_generic_if.png "Generic status and
+ control interface")
+
+All debug modules have common debug-side status and control interface
+as depicted in the figure. It is a base register map that contains
+mandatory and optional registers such as:
+
+ * The *module class* and a module *vendor id* and *product id*, that
+   support enumeration and software handling of the debug modules on
+   the host
+
+ * Enable and disable the entire module
+
+ * Query module-specific capabilities and enable features
+
+This interface usually runs in the debug system clock domain, while
+the actual module logic is responsible for clock domain crossing
+between the connected system component and the debug clock
+domain. Most simply, tracing is usually done by (naturally) sampling
+the trace information in the component's domain and cross the trace
+event via a small buffer into the module logic that handles
+packetization of the trace event.
+
 # Basic Debug Modules
 
 ## Host Interface Module (HIM)
