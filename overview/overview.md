@@ -84,7 +84,19 @@ of the scope of this project for now.
 
 ## Physical Interface
 
-## Transport Layer
+![Generic Logic Interface Project (glip) as abstraction layer from physical interface](../images/glip.png
+ "Debug System Overview")
+
+The physical interface is abstracted in Open SoC Debug. As mentioned
+before we build on top of [glip](https://www.glip.io) as depicted in
+the Figure. Glip provides a generic FIFO interface that reliably
+transfers data between the host and the system. Multiple alternatives
+for simulations and prototyping hardware exist. In a silicon device, a
+high-speed serial interface is most probably favorable.
+
+## Transport & Switching
+
+
 
 ## Debug Modules
 
