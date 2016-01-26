@@ -81,7 +81,7 @@ the same license as the original.
 ![Overview of an Open SoC Debug debug system](../images/overview.png
  "Debug System Overview")
 
-Figure 1 shows an overview of the different components in an Open SoC
+The overview figure shows the different components in an Open SoC
 Debug-based debug system. The most important components are the debug
 modules that monitor or interact with the SoC components via specified
 interfaces. A debug network is used to exchange messages between those
