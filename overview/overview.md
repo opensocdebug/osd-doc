@@ -39,8 +39,9 @@ module specification, that contain the following parts:
 
 This is just the start that covers the very basic functionality, but
 more features will be added to the specification over the next months:
-device traces, module triggering, cross-triggers, on-chip aggregation
-and filtering, sophisticated interconnects, just to mention a few.
+tracing to memory instead of host, device traces, module triggering,
+cross-triggers, on-chip aggregation and filtering, sophisticated
+interconnects, just to mention a few.
 
 If you are interested in giving input, reviewing our specifications or
 joining the Open SoC Debug team, please visit our website:
@@ -96,7 +97,50 @@ high-speed serial interface is most probably favorable.
 
 ## Transport & Switching
 
+To route debug information to the correct debug module and to the
+host, we use a simple packet-based protocol. The packet size is
+limited by the implementation and can be queried from the System
+Control Module (SCM). The minimum packet size is 8.
 
+For flow control and to mark the start and end of a packet, the *Debug
+Interconnect Interface (DII)* is defined therefore. The packet width
+must be at least 16 bit and currently is set fixed to 16 bit.
+
+The debug packets contain the necessary routing and identification
+information, namely the destination and the source, in their header,
+which are the first two data items in a packet.
+
+One key property of the transport & switching in the Open SoC Debug
+specification is that it generally allows that debug modules exchange
+packets between them. This enables on-chip trace processing,
+run-control debugging from a special core or other methods to reduce
+the traffic on the host interface, which is the most critical resource
+in modern debugging.
+
+![Debug ring and other interconnects](../images/interconnect.png "Debug ring and other interconnects")
+
+In general, the interconnect can have any possible topology as long as
+it fulfills two basic properties: strict-ordering and
+deadlock-freedom. The figure shows the favored topologies. The
+baseline implementation is a simple ring interconnect. The ring
+balances well between clock speed, required chip area and most
+importantly flexibility. It can easily span the entire chip without
+dominating a design.
+
+Alternatively, other topologies may be favored. For example a low
+count of debug modules favors a multiplexer interconnect. Especially
+if the debug modules are all trace debugging or all run-control
+debugging a bus or similar can be favorable for low debug module
+counts. When the modules also communicate with each other a crossbar
+may be used for high throughput, but with the advantage of large area
+overhead.
+
+Finally, we believe once some first tests with larger systems in the
+real world have been performed, hierarchical topologies may become
+favorable. Beside optimizing the resource utilization, aggregating
+modules may bridge subsets of trace modules to the actual debug
+interconnect to perform size optimizations on the aggregated packet
+stream.
 
 ## Debug Modules
 
