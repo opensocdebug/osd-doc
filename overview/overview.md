@@ -199,6 +199,25 @@ version.
 It is generally allowed that debug modules can also generate such
 request to query or control other debug modules.
 
+![The convenience MMIO bridge wrapper](../images/debug_module_mmiobridge.png
+ "The convenience MMIO bridge wrapper")
+
+There is a convenience wrapper that maps the register access debug
+packets to memory-mapped bus interface. As depicted in the figure this
+module is especially useful for host-controlled modules, such as
+run-control debugging.
+
+The basic bus interface allows for register addresses. The data width
+is configurable, for example as a processor's data width. The memory
+adresses are register numbers, so that is is not possible to address
+unaligned to the configured data width.
+
+Finally, there is an `interrupt` signal that can be used to send
+unsolicited events to the host, for example a `breakpoint` event. The
+bridge is configured to read a value from a configured address and
+send it to the host. Thereby it is possible to implement run-control
+debugging without polling for events.
+
 ### Debug Events
 
 Debug events are unsolicited messages generated from a debug
