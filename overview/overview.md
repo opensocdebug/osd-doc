@@ -277,17 +277,107 @@ interface is available again.
 
 # Basic Debug Modules
 
+In the following we will shortly introduce the core group of debug
+modules which will be part of Open SoC Debug. Only two modules are
+mandatory: The *Host Interface Module* to transfer data between the
+debug system and the host or memory, and the *System Control Module*
+that identifies the system, provides system details and controls the
+system.
+
 ## Host Interface Module (HIM)
+
+![Host Interface Module](../images/debug_module_him.png "Host
+ Interface Module")
+
+The *Host Interface Module (HIM)* converts the debug packets to a
+`length`-`value` encoded data stream, that is transferred using the
+glip interconnect. This format is simple and contains the length of
+the debug packet in one data item followed by the debug packet.
+
+Alternatively, the HIM can be configured to store the debug packets to
+the system memory using the memory interface.
+
+## Host Authentication Module (HAM)
+
+![Host Authentication Module](../images/debug_module_ham.png "Host
+ Authentication Module")
+
+The system can require the host to authenticate before connecting to
+the debug system, because the debug can expose confidential
+information. A *HAM* implementation can for example require a token to
+match or a sophisticated challenge-response protocol. If configured
+the HIM will wait for the HAM to allow the host to communicate with
+modules other than the HAM.
 
 ## System Control Module (SCM)
 
-One per system
+![System Control Module](../images/debug_module_scm.png "System
+ Control Module")
+
+The *System Control Module (SCM)* is always mapped to address `1` on
+the debug interconnect (`0` is the host/HIM address). The host first
+queries the SCM to provide system information, like a system
+identifier, the number of debug modules, or the maximum packet length.
+
+Beside that it can be used to control the system. For that it can set
+the soft reset of the processor cores and the peripherals separately
+in the first specification.
 
 ## Core Debug Module (CDM)
 
+![Core Debug Module](../images/debug_module_cdm.png "Core Debug
+ Module")
+
+The core debug module implements run-control debugging for a processor
+core. The implementation is to a certain degree core-dependent, but a
+generic implementation is sketched in the figure. It has a memory
+mapped interface as described above. The debug control, status
+information and core register are mapped in memory regions. The
+run-control debugger (e.g., gdb) then sends register access
+requests. In case of a debug event (breakpoint hit) `interrupt`
+signals are asserted. As a reaction the CDM reads a defined address
+and the core-specific part of the CDM generates a debug event.
+
+Of course, other implementations are possible or may be required
+depending on the interface processor implementation.
+
 ## Core Trace Module (CTM)
 
+The *Core Trace Module (CTM)* captures trace events generated from the
+processor core. The implementation is core-dependent and will be
+highly configurable. Such trace events are core-internal signals, like
+the completion of an instruction, the branch predictor status, memory
+access delays, cache miss rates, just to name a few possibilities.
+
+The CTM specification will define a few basic trace events and how
+they can efficiently packed, because such events are usually generated
+with a high rate.
+
 ## Software Trace Module (STM)
+
+The *Software Trace Module (STM)* emits trace events that are emitted
+by the software execution. Such an STM event is a tuple
+`(id,value)`. There are generally two classed: user-defined and
+system-generated trace events.
+
+User-defined trace events are added by the user by instrumenting the
+source code with calls to an API like `TRACE(short id, uint64_t
+value)`. A debug tool can map the trace events to a visualization.
+
+Different user threads can emit trace events interleaved. Beside this
+the operating system can emit relevant trace information too. For both
+reasons, there are system-generated events.
+
+There are two ways to emit a software trace event. First there is a
+set of *special pupose registers* or similar techniques used to emit
+trace events. Most importantly, each trace event must be emitted
+atomically. Secondly, the processor core can have hardware to emit
+software trace events. For example a mode change can be emitted
+without much overhead.
+
+The generic trace interface is `enable`, `id` and `value` at the core
+level and the STM handles the filtering, aggregation and packetization
+as described above.
 
 ## Memory Access Modules (MAM)
 
