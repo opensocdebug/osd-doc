@@ -251,6 +251,8 @@ constant at a single trace module's sampling interface. Examples are:
 Summarizing, nearly every hardware block is a candidate to generate
 useful trace information.
 
+#### Clock Domains
+
 The base functionality of a trace module is packetization of the trace
 data to trace event packets. Optionally, the module may filter events
 or compress the event stream. At some point it is necessary to cross
@@ -258,6 +260,20 @@ between the module's clock domain and the debug clock domain. This can
 alternatively be done on the trace event sampling, at the packet
 output or somewhere in between, depending on which clock is faster and
 at which rates trace events are generated.
+
+#### Overflow Handling
+
+In case the trace events are generated at a faster rate than the host
+interface can transfer. This problem becomes crucial with the
+increasing number of trace modules. Generally, this can be done on the
+level of the debug system by a sophisticated flow control that will be
+specified in later revisions. An overflow occurs if a trace event is
+generated, but cannot be transferred or buffered due to backpressure
+from the interconnect, but backpressure cannot be generated to the
+system module. In the current specification the trace infrastructure
+detects this situation, counts how many packets could not be
+transfered and then transfers a `missed_events` event once it the
+interface is available again.
 
 # Basic Debug Modules
 
