@@ -68,7 +68,7 @@ appropriate credit and indicate if changes were made, (ii) ShareAlike:
 If you modify or derive from this work, you must distribute it under
 the same license as the original.
 
-# Debug System Overview
+#<a name="debug-system-overview"/>Debug System Overview
 
 ![Overview of an Open SoC Debug debug system](../images/overview.png
  "Debug System Overview")
@@ -89,7 +89,7 @@ used to share a system between multiple debug tools. While we support
 anyone who works on debug tools, the development of fancy tools is out
 of the scope of this project for now.
 
-## Physical Interface
+##<a name="physical-interface"/>Physical Interface
 
 ![Generic Logic Interface Project (glip) as abstraction layer from physical interface](../images/glip.png
  "Debug System Overview")
@@ -101,7 +101,7 @@ transfers data between the host and the system. Multiple alternatives
 for simulations and prototyping hardware exist. In a silicon device, a
 high-speed serial interface is most probably favorable.
 
-## Transport & Switching
+##<a name="transport-switching"/>Transport & Switching
 
 To route debug information to the correct debug module and to the
 host, we use a simple packet-based protocol. The packet size is
@@ -152,7 +152,7 @@ modules may bridge subsets of trace modules to the actual debug
 interconnect to perform size optimizations on the aggregated packet
 stream.
 
-## Debug Modules
+##<a name="debug-modules"/>Debug Modules
 
 The debug modules either monitor a debug module or interact with it in
 case of run-control debugging or special functionalities. On the other
@@ -183,7 +183,7 @@ the trace information in the component's domain and cross the trace
 event via a small buffer into the module logic that handles
 packetization of the trace event.
 
-### Register Access
+###<a name="register-access"/>Register Access
 
 The host sends register access packets to the debug modules to
 
@@ -218,7 +218,7 @@ bridge is configured to read a value from a configured address and
 send it to the host. Thereby it is possible to implement run-control
 debugging without polling for events.
 
-### Debug Events
+###<a name="debug-events"/>Debug Events
 
 Debug events are unsolicited messages generated from a debug
 module. This can for examle be a "breakpoint hit" message from a
@@ -226,7 +226,7 @@ run-control debug module, or a trace message. In the first case the
 host usually starts with a sequence of register accesses, while in
 general debug events are of a fire-and-forget nature.
 
-### Trace Modules
+###<a name="trace-modules"/>Trace Modules
 
 ![Generic trace module structure](../images/generic_trace_module.png
  "Generic trace module structure")
@@ -251,7 +251,7 @@ constant at a single trace module's sampling interface. Examples are:
 Summarizing, nearly every hardware block is a candidate to generate
 useful trace information.
 
-#### Clock Domains
+###<a name="clock-domains"/>Clock Domains
 
 The base functionality of a trace module is packetization of the trace
 data to trace event packets. Optionally, the module may filter events
@@ -261,7 +261,7 @@ alternatively be done on the trace event sampling, at the packet
 output or somewhere in between, depending on which clock is faster and
 at which rates trace events are generated.
 
-#### Overflow Handling
+###<a name="overflow-handling"/>Overflow Handling
 
 In case the trace events are generated at a faster rate than the host
 interface can transfer. This problem becomes crucial with the
@@ -275,7 +275,7 @@ detects this situation, counts how many packets could not be
 transfered and then transfers a `missed_events` event once it the
 interface is available again.
 
-# Basic Debug Modules
+#<a name="basic-debug-modules"/>Basic Debug Modules
 
 In the following we will shortly introduce the core group of debug
 modules which will be part of Open SoC Debug. Only two modules are
@@ -284,7 +284,7 @@ debug system and the host or memory, and the *System Control Module*
 that identifies the system, provides system details and controls the
 system.
 
-## <a name="host-interface-module-him"/> Host Interface Module (HIM)
+##<a name="host-interface-module-him"/>Host Interface Module (HIM)
 
 ![Host Interface Module](../images/debug_module_him.png "Host
  Interface Module")
@@ -297,7 +297,7 @@ the debug packet in one data item followed by the debug packet.
 Alternatively, the HIM can be configured to store the debug packets to
 the system memory using the memory interface.
 
-## Host Authentication Module (HAM)
+##<a name="host-authentication-module-ham"/>Host Authentication Module (HAM)
 
 ![Host Authentication Module](../images/debug_module_ham.png "Host
  Authentication Module")
@@ -309,7 +309,7 @@ match or a sophisticated challenge-response protocol. If configured
 the [HIM](#host-interface-module-him) will wait for the HAM to allow
 the host to communicate with modules other than the HAM.
 
-## System Control Module (SCM)
+##<a name="system-control-module-scm"/>System Control Module (SCM)
 
 ![System Control Module](../images/debug_module_scm.png "System
  Control Module")
@@ -323,7 +323,7 @@ Beside that it can be used to control the system. For that it can set
 the soft reset of the processor cores and the peripherals separately
 in the first specification.
 
-## Core Debug Module (CDM)
+##<a name="core-debug-module-cdm"/>Core Debug Module (CDM)
 
 ![Core Debug Module](../images/debug_module_cdm.png "Core Debug
  Module")
@@ -341,7 +341,7 @@ and the core-specific part of the CDM generates a debug event.
 Of course, other implementations are possible or may be required
 depending on the interface processor implementation.
 
-## Core Trace Module (CTM)
+##<a name="core-trace-module-ctm"/>Core Trace Module (CTM)
 
 The *Core Trace Module (CTM)* captures trace events generated from the
 processor core. The implementation is core-dependent and will be
@@ -353,7 +353,7 @@ The CTM specification will define a few basic trace events and how
 they can efficiently packed, because such events are usually generated
 with a high rate.
 
-## Software Trace Module (STM)
+##<a name="software-trace-module-stm"/>Software Trace Module (STM)
 
 The *Software Trace Module (STM)* emits trace events that are emitted
 by the software execution. Such an STM event is a tuple
@@ -379,7 +379,7 @@ The generic trace interface is `enable`, `id` and `value` at the core
 level and the STM handles the filtering, aggregation and packetization
 as described above.
 
-## Memory Access Modules (MAM)
+##<a name="memory-access-module-mam"/>Memory Access Module (MAM)
 
 ![Memory Access Module](../images/debug_module_mam.png "Memory Access
  Module")
@@ -394,6 +394,6 @@ blocks or the last level cache. In the presence of write-back caches
 the memory access may be required to be guarded by a run-control
 triggered forced writeback if necessary.
 
-## Debug Processor Modules (DPM)
+##<a name="debug-processor-modules-dpm"/>Debug Processor Module (DPM)
 
-# Host Software
+#<a name="host-software"/>Host Software
