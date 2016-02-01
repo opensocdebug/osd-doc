@@ -1,5 +1,5 @@
 PANDOC?=pandoc
-PANDOC_OPTIONS?=-s -S -V documentclass=scrartcl -H ../shared/pandoc-header.tex
+PANDOC_OPTIONS?=-s -S --toc -V documentclass=scrartcl -H ../shared/pandoc-header.tex
 
 FILES=pandoc-metadata.yaml \
       overview.md
