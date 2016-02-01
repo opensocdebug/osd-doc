@@ -275,6 +275,30 @@ detects this situation, counts how many packets could not be
 transfered and then transfers a `missed_events` event once it the
 interface is available again.
 
+###<a name="timestamps"/>Timestamps
+
+In many cases it is important to correlate them to each other, for
+example to identify race conditions. As the debug packets may not
+arrive at the host in the order they were generated, it is therefore
+necessary to add a timestamp when necessary. In the first
+specification timestamps will be full numbers of configurable width,
+but discussion about the both important factors has started:
+
+* *Efficient timestamp generation* is the on-chip generation of a
+  common time base with minimum area overhead. While a first naive
+  implementation may generate timestamps locally by distributed
+  counters (in each module), distributing a global timestamp over the
+  whole design may be less hungry for resources.
+
+* *Efficient coding of timestamps* is the timestamp field in each
+  debug packet. It can either be the current timestamp or be some
+  improved method like a variable-length delta item etc.
+
+Timestamps can be optionally configured at each module: The host can
+query the debug module if it generates timestamps (and potentially
+with which method they are coded) or also enable/disable timestamps
+depending on the debug tool or method.
+
 #<a name="basic-debug-modules"/>Basic Debug Modules
 
 In the following we will shortly introduce the core group of debug
