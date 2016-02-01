@@ -445,4 +445,12 @@ This subsystem may be interface from the system itself to configure
 it. It may also be part of the actual system, like a core that can be
 dynamically dedicated to be a DPM.
 
+##<a name="device-emulation-module-dem"/>Device Emulation Module (DEM)
+
+It may be desired to deploy I/O modules that do not map to I/O pins,
+but instead exchange transactions with the host. This may for example
+be a serial terminal that send output characters to the host. Another
+important usecase for such modules is the emulation of devices on the
+host or the simulation of a module during development of it.
+
 #<a name="host-software"/>Host Software
