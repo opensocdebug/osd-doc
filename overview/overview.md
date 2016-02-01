@@ -420,4 +420,29 @@ triggered forced writeback if necessary.
 
 ##<a name="debug-processor-modules-dpm"/>Debug Processor Module (DPM)
 
+![Debug Processor Module](../images/debug_module_dpm.png "Debug
+Processor Module")
+
+As mentioned in the [Introduction](#introduction) we believe in the
+importance of on-chip processing of debug information. The chip
+interface is the bottleneck in the entire debug infrastructure. But
+the developer wants to collect as much trace events as possible to get
+a complete picture of the execution. The approch to solve this
+trade-off is to process trace events on the chip already. This can be
+either filtering or compression as introduced with
+[Trace Modules](#trace-modules), but also more complex processing of
+trace events to generate processed information out of raw data.
+
+A debug processor module is a subsystem in the debug system that can
+receive debug packets, store them and process them to new debug
+packets to be sent to the host. As depicted in the Figure a basic DPM
+therefore contain a programmable hardware block (possibly a simple
+CPU) and some local memory to execute programs from and store debug
+data. A DPM can also send debug packets to configure debug modules and
+set itself as destination of packets or configure filters, etc.
+
+This subsystem may be interface from the system itself to configure
+it. It may also be part of the actual system, like a core that can be
+dynamically dedicated to be a DPM.
+
 #<a name="host-software"/>Host Software
