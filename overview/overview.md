@@ -381,6 +381,19 @@ as described above.
 
 ## Memory Access Modules (MAM)
 
+![Memory Access Module](../images/debug_module_mam.png "Memory Access
+ Module")
+
+The *Memory Access module (MAM)* is used to write data to the memory
+or read data back from the memory. This module can therefore be used
+to inititalize the memory with a program or inspect the memory
+post-mortem or during run-control debugging.
+
+The module is either connected to the system memory, other memory
+blocks or the last level cache. In the presence of write-back caches
+the memory access may be required to be guarded by a run-control
+triggered forced writeback if necessary.
+
 ## Debug Processor Modules (DPM)
 
 # Host Software
