@@ -454,3 +454,15 @@ important usecase for such modules is the emulation of devices on the
 host or the simulation of a module during development of it.
 
 #<a name="host-software"/>Host Software
+
+As mentioned before, the host software is not in the focus of the Open
+SoC Debug project, but we strongly support development of debug
+software around our infrastructure.
+
+The basic level of the `libopensocdebug` is the packetization of debug
+packets. It also provides higher-level functions, for example register
+access functions or up to convenience functions to perform
+module-specific operations. A debug tool can build against this
+library, or alternatively start the `opensocdebugd` daemon that allows
+multiplexing of one Open SoC Debug-enabled system between different
+tools.
