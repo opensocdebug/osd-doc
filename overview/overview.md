@@ -49,6 +49,10 @@ tracing to memory instead of host, device traces, module triggering,
 cross-triggers, on-chip aggregation and filtering, sophisticated
 interconnects, just to mention a few.
 
+TODO: Clarify target audience
+
+TODO: Examples
+
 If you are interested in giving input, reviewing our specifications or
 joining the Open SoC Debug team, please visit our website:
 [http://www.opensocdebug.org](http://www.opensocdebug.org)
@@ -88,6 +92,32 @@ interact with the debug modules or the `opensocdebugd` daemon can be
 used to share a system between multiple debug tools. While we support
 anyone who works on debug tools, the development of fancy tools is out
 of the scope of this project for now.
+
+## System Architecture
+
+TODO: Overview of interfaces and composability
+
+## Debug Features
+
+TODO: Fill with generic content from below
+
+### Run-control Debug
+
+### Trace debugging
+
+### Memory access
+
+### System Discovery
+
+### Debug Timestamps
+
+### Security and Authentication
+
+# Hardware Architecture
+
+## Debug Module Template
+
+TODO: Memory map and interfaces
 
 ##<a name="physical-interface"/>Physical Interface
 
@@ -152,7 +182,9 @@ modules may bridge subsets of trace modules to the actual debug
 interconnect to perform size optimizations on the aggregated packet
 stream.
 
-##<a name="debug-modules"/>Debug Modules
+## TODO: part 3 sections
+
+#<a name="debug-modules"/>Debug Modules
 
 The debug modules either monitor a debug module or interact with it in
 case of run-control debugging or special functionalities. On the other
