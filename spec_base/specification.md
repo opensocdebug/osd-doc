@@ -158,7 +158,7 @@ For 32-bit accesses the request is:
  1 | Data[31:16]
  2 | Data[15:0]
 
-And for 64-bit access the request is:
+For 64-bit access the request is:
 
  Word | Description
  ---- | -----------
@@ -168,79 +168,35 @@ And for 64-bit access the request is:
  3 | Data[31:16]
  4 | Data[15:0]
 
+Accordingly, the 128-bit register request is:
+
+ Word | Description
+ ---- | -----------
+ 0 | Register Address
+ 1 | Data[127:112]
+ 2 | Data[111:96]
+ 3 | Data[95:80]
+ 4 | Data[79:64]
+ 5 | Data[63:48]
+ 6 | Data[47:32]
+ 7 | Data[31:16]
+ 8 | Data[15:0]
+
 The packet is acknowledged with a `RESP_WRITE_REG` packet.
-
-### `REQ_READ_REG_BURST`
-
-This reads registers in a burst. Regarding the register size and
-addressing the same rules apply as for `REQ_READ_REG`.
-
-Word | Desription
----- | ----------
-0 | Register Address
-1 | `15`: `mode`, `14:10`: reserved, `9:0`: size
-
-`mode` is `0` for incremental bursts and `1` for same-address
-bursts. The response is a `RESP_READ_REG` packet.
-
-### `REQ_WRITE_REG_BURST`
-
-This writes registers in burst. The same conditions as for
-`REQ_WRITE_REG` apply.
-
-16-bit registers are accessed as:
-
-Word | Desription
----- | ----------
-0 | Register Address
-1 | `15`: `mode`, `14:10`: reserved, `9:0`: size (N)
-2 | Data Word 0
-.. | ..
-N+2 | Data Word N
-
-32-bit registers are accessed as:
-
-Word | Desription
----- | ----------
-0 | Register Address
-1 | `15`: `mode`, `14:10`: reserved, `9:0`: size (N)
-2 | Data Word 0 [31:16]
-3 | Data Word 0 [15:0]
-.. | ..
-Nx2+1 | Data Word N [31:16]
-Nx2+2 | Data Word N [15:0]
-
-Similarly, 64-bit registers are accessed as:
-
-Word | Desription
----- | ----------
-0 | Register Address
-1 | `15`: `mode`, `14:10`: reserved, `9:0`: size (N)
-2 | Data Word 0 [63:48]
-.. | ..
-5 | Data Word 0 [15:0]
-.. | ..
-Nx4+2 | Data Word N [15:0]
-
-`mode` is `0` for incremental bursts and `1` for same-address
-bursts. The write is acknowledged with a `RESP_WRITE_REG` packet.
 
 ### `RESP_READ_REG`
 
 The read response is either an empty response if there was an
 error. The error case is indicated by the type field (see below).
 
-Otherwise the data is returned (1 word for `REQ_READ_REG` and `size`
-words for `REQ_READ_BURST`), for 16-bit reads:
+Otherwise the data is returned (1 word), for 16-bit reads:
 
 Word | Description
 ---- | ----------
 0 | Data word 0
-.. | ..
-N | Data word N
 
-For 32-bit and 64-bit reads the same order as for REG_WRITE_BURST
-applies.
+For 32-bit, 64-bit and 128-bit reads the same order as for
+`REG_WRITE` applies.
 
 ### `RESP_WRITE_REG`
 
@@ -276,11 +232,10 @@ The following table shows the coding
 
  Type | Coding (six bit)
  ---- | ----------------
- `REQ_READ_REG` | `[5:2]` `0010`, `[1:0]` `regsize`
- `REQ_WRITE_REG` | `[5:2]` `0011`, `[1:0]` `regsize`
- `REQ_READ_REG_BURST` | `[5:2]` `0000`, `[1:0]` `regsize`
- `REQ_WRITE_REG_BURST` | `[5:2]` `0001`, `[1:0]` `regsize`
- `DBG_EVENT` | `[5:2]` `1000`, `[1:0]` `eventsize`
+ `REQ_READ_REG` | `[5:2]` `0000`, `[1:0]` `regsize`
+ `REQ_WRITE_REG` | `[5:2]` `0001`, `[1:0]` `regsize`
+ `DBG_EVENT` | `[5:4]` `10`, `[3:0]` `eventsize`
+ `PLAIN` | `[5:4]` `01`, `[3:0]` `size`
  `RESP_READ_REG` | `[5:1]` `00000`, `[0]` is `1` if an error occured, `0` else
  `RESP_WRITE_REG` | `[5:1]` `00001`, `[0]` is `1` if an error occured, `0` else
 
@@ -288,18 +243,20 @@ The following table shows the coding
 
  `regsize` | Description
  --------- | -----------
- `01` | 16 bit register(s)
- `10` | 32 bit register(s)
- `11` | 64 bit register(s)
+ `00` | 16 bit register
+ `01` | 32 bit register
+ `10` | 64 bit register
+ `11` | 128 bit register
 
 `eventsize` is defined as:
 
  `eventsize` | Description
  ----------- | -----------
- `00` | Event length: 1 word
- `01` | Event length: 2 words
- `10` | Event length: 3 words
- `11` | Event length encoded in packet word 0
+ `0000` | Event length: 1 word
+ `0001` | Event length: 2 words
+  ..    | ..
+ `1110` | Event length: 15 words
+ `1111` | Event length encoded in packet word 0
 
 # Debug Module Registers
 
