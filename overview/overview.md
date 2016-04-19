@@ -1,64 +1,72 @@
 # Introduction
 
-With the ever increasing number of open source system-on-chip designs,
-we see a big benefit in a unified system-on-chip debug
-infrastructure. On the one hand it is fair to say that developers
-usually see debug as a inevitable must that does not add some fancy
-new feature or increases performance, hence a toolbox of available
-building blocks can easily help them. On the other hand a unified
-infrastructure with shared interfaces eases the interoperability of
-tools and hardware.
+## About Open SoC Debug
 
-The goal of the Open System-on-Chip Debug (Open SoC Debug, OSD)
-infrastructure is therefore to provide a repository of building
-blocks, glue infrastructure and host software libraries for SoC
-debugging. We therefore aim at supporting support for both run-control
-debugging and trace debugging. While run-control debugging is
-well-known and often used in the shape of JTAG-based debugging cables,
-trace-debugging is the observation of a system-on-chip with trace
-events and it gains increasing significance with multicore
-system-on-chip due to their parallelism.
+Systems-on-Chip (SoCs) have become embedded deeply into our lives.
+Most of the time we enjoy the way they serve their purpose without getting in the way.
+Until they don't.
+In those moments, we as engineers are reminded of the complex interplay between software and hardware in SoCs.
+We might pose questions like "How does my software execute on the chip?" or "Why is it showing this exact behavior?"
+To answer these questions we need insight into the system that executes the software.
+We gain this insight through the debug infrastructure integrated into the SoC.
 
-Furthermore, it is our philosophy that debugging is much more then
-traditional functional debugging to eliminate bugs. Instead a good
-trace debug infrastructure helps with performance diagnosis. It should
-be possible to find inefficiencies or problems that do not manifest
-in a functional, but should be solved.
+Even though debug infrastructure is an essential part of any SoC design, most people consider creating it more of a necessary chore than an exciting endeavor.
+Therefore, most vendors today include debug infrastructure that follows one of two major specifications: [ARM CoreSight](http://www.arm.com/products/system-ip/debug-trace/) and [NEXUS 5001](http://nexus5001.org/) (officially called "IEEE-ISTO 5001").
+Unfortunately, none of these specifications are fully open, they cannot be used without any money involved.
 
-In this article we give an overview of the the Open SoC Debug project
-and the different layers and components both on the chip and on the
-host the we plan in this project.
+The Open SoC Debug (OSC) specification was created to close this gap.
+Three key messages guide its design.
 
-The building blocks share common interfaces and protocols, so that
-they are easily composable, but the specifications will always allow
-highly optimized versions for a specific setup.
+* **OSD is a truly open (source) specification.**
+  Without any committee membership required or royalty fees to be payed, anyone can freely
+    - share and modify the specification itself, and
+    - create and distribute implementations of the specification for any purpose.
+- **OSD is for debugging and tracing.**
+  A debugging infrastructure by itself is not a solution, but a toolbox providing the right tool for the task.
+  Some bugs are best hunted using run-control debugging, some are better found using tracing.
+  OSD supports both, enabling hardware and software developers to pick what's best for their needs.
+- **OSD provides the common and enables the special.**
+  SoCs came to live because they allow reuse of components and specialization at the same time, letting hardware designers focus on the unique challenges without re-inventing the wheel. OSD follows this lead. Common IP blocks, interfaces and software tools can be re-used, and multiple extension vectors allow for easy customization where necessary.
 
+## Scope
+By implementing Open SoC Debug, a SoC gains the following features (to a varying and implementation-defined degree).
+
+- Support for run-control debugging, i.e. setting breakpoints and watchpoints and reading register values. In short, all you need to attach a debugger like GDB to the SoC.
+- Support for tracing, i.e. non-intrusively observing the program execution on the SoC.
+- Support for remotely controlling the SoC during development, e.g. starting the CPUs,  resetting the system, and reading and writing the memories.
+
+To provide these features, this specification defines
+- an extensible debug system architecture, covering both hardware and host software,
+- templates with well-defined interfaces for debug and trace IP blocks ("debug modules"),
+- a set of common debug modules for the most frequent run-control debug and tracing tasks,
+- a host-side software programming interface (API) for debug tools to interact with an OSD-enabled debug system.
+
+In addition, implementations of many components specified in the OSD specification are made available under a permissive open source license which can be used directly in custom designs.
+
+## Current Status
+OSD is an evolving effort.
 Currently, we target the first release of the base specification and
 module specification, that contain the following parts:
 
  * Basic interfaces and transport protocols
-
  * A generic and mandatory memory map for all debug modules to allow
    enumeration, capabilities and versioning
-
  * Basic modules for run-control and trace debugging
 
-This is just the start that covers the very basic functionality, but
-more features will be added to the specification over the next months:
-tracing to memory instead of host, device traces, module triggering,
-cross-triggers, on-chip aggregation and filtering, sophisticated
-interconnects, just to mention a few.
+This is just the start that covers the very basic functionality, but more features are planned to be added to the specification in the near future:
+tracing to memory instead of host, device traces, module triggering, cross-triggers, on-chip aggregation and filtering, sophisticated interconnects, just to mention a few.
 
-TODO: Clarify target audience
+## About This Document
+This document gives an overview of Open SoC Debug.
+The goal is to provide interested designers SoC hardware components as well as developers of debugging software tools a good understanding of the overall picture and the reasoning behind the design of OSD.
+This document is not the specification itself.
+Please refer to the individual sub-documents for the exact wording of the specification.
 
-TODO: Examples
+## OSD Contributions and Licensing
+OSD is a community effort and anyone is invited to join.
+If you are interested in giving input, reviewing our specifications or joining the Open SoC Debug team, please visit our website: [http://www.opensocdebug.org](http://www.opensocdebug.org)
 
-If you are interested in giving input, reviewing our specifications or
-joining the Open SoC Debug team, please visit our website:
-[http://www.opensocdebug.org](http://www.opensocdebug.org)
-
-## License
-
+### Specification License
 This work is licensed under the Creative Commons
 Attribution-ShareAlike 4.0 International License. To view a copy of
 this license, visit
@@ -72,7 +80,21 @@ appropriate credit and indicate if changes were made, (ii) ShareAlike:
 If you modify or derive from this work, you must distribute it under
 the same license as the original.
 
-#<a name="debug-system-overview"/>Debug System Overview
+## Revision History
+
+--------------------------------------------------------------------------------
+revision          date       changes
+----------------- ---------- ---------------------------------------------------
+2016.1, Preview 1 2016-02-01 1st preview of initial version for discussion.
+
+2016.1, Preview 2 2016-XX-XX 2nd preview of initial version for discussion.
+                             Revised document structure.
+--------------------------------------------------------------------------------
+
+A full revision history in all detail is available in our [Git repository](https://github.com/opensocdebug/documentation).
+
+
+#<a name="debug-system-overview"/>Open SoC Debug Architecture Overview
 
 ![Overview of an Open SoC Debug debug system](../images/overview.png
  "Debug System Overview")
@@ -270,16 +292,16 @@ constant at a single trace module's sampling interface. Examples are:
 
  * A processor core's execution trace: Executed program counter,
    branch-taken or similar
- 
+
  * A processor core's diagnosis trace: Functional unit utilization,
    branch predictor efficiency, etc.
 
  * Cache diagnosis trace: Hits/Misses, Conflicts, average memory
    access time, etc.
- 
+
  * DMA controller trace: Start and end of request, average memory
    latency
- 
+
 Summarizing, nearly every hardware block is a candidate to generate
 useful trace information.
 
