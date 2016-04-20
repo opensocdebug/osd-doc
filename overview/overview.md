@@ -14,7 +14,7 @@ Even though debug infrastructure is an essential part of any SoC design, most pe
 Therefore, most vendors today include debug infrastructure that follows one of two major specifications: [ARM CoreSight](http://www.arm.com/products/system-ip/debug-trace/) and [NEXUS 5001](http://nexus5001.org/) (officially called "IEEE-ISTO 5001").
 Unfortunately, none of these specifications are fully open, they cannot be used without any money involved.
 
-The Open SoC Debug (OSC) specification was created to close this gap.
+The Open SoC Debug (OSD) specification was created to close this gap.
 Three key messages guide its design.
 
 * **OSD is a truly open (source) specification.**
@@ -41,7 +41,7 @@ To provide these features, this specification defines
 - a set of common debug modules for the most frequent run-control debug and tracing tasks,
 - a host-side software programming interface (API) for debug tools to interact with an OSD-enabled debug system.
 
-In addition, implementations of many components specified in the OSD specification are made available under a permissive open source license which can be used directly in custom designs.
+In addition, implementations of many components described in the OSD specification are made available under a permissive open source license which can be used directly in custom designs.
 
 ## Current Status
 OSD is an evolving effort.
