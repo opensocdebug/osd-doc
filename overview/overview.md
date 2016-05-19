@@ -203,7 +203,7 @@ Today's debug system architectures strictly separate between run-control debuggi
 The example below shows how OSD units the two worlds with a common interface, thus reducing development and maintainance effort.
 Since most of the architecture is shared between run-control debugging and tracing, upgrading an existing design from run-control debugging to tracing is not a large step.
 
-![An example system using OSD for run-control debugging](../images/overview_example_trace.svg "An example system dual-core system using OSD tracing"){#fig:overview_example_trace}
+![An example system dual-core system using OSD tracing](../images/overview_example_trace.svg "An example system dual-core system using OSD tracing"){#fig:overview_example_trace}
 
 @Fig:overview_example_trace shows an example architecture of a OSD system with tracing support for a  dual-core design.
 Most of the architecture is identical to the previous example: the host daemon, the HIM, the debug network and the SCM, CDM and MAM debug modules.
