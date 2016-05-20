@@ -21,25 +21,26 @@ Three key messages guide its design.
   Without any committee membership required or royalty fees to be payed, anyone can freely
     - share and modify the specification itself, and
     - create and distribute implementations of the specification for any purpose.
-- **OSD is for debugging and tracing.**
+* **OSD is for debugging and tracing.**
   A debugging infrastructure by itself is not a solution, but a toolbox providing the right tool for the task.
   Some bugs are best hunted using run-control debugging, some are better found using tracing.
   OSD supports both, enabling hardware and software developers to pick what's best for their needs.
-- **OSD provides the common and enables the special.**
+* **OSD provides the common and enables the special.**
   SoCs came to live because they allow reuse of components and specialization at the same time, letting hardware designers focus on the unique challenges without re-inventing the wheel. OSD follows this lead. Common IP blocks, interfaces and software tools can be re-used, and multiple extension vectors allow for easy customization where necessary.
 
 ## Scope
 By implementing Open SoC Debug, a SoC gains the following features (to a varying and implementation-defined degree).
 
-- Support for run-control debugging, i.e. setting breakpoints and watchpoints and reading register values. In short, all you need to attach a debugger like GDB to the SoC.
-- Support for tracing, i.e. non-intrusively observing the program execution on the SoC.
-- Support for remotely controlling the SoC during development, e.g. starting the CPUs,  resetting the system, and reading and writing the memories.
+* Support for run-control debugging, i.e. setting breakpoints and watchpoints and reading register values. In short, all you need to attach a debugger like GDB to the SoC.
+* Support for tracing, i.e. non-intrusively observing the program execution on the SoC.
+* Support for remotely controlling the SoC during development, e.g. starting the CPUs,  resetting the system, and reading and writing the memories.
 
 To provide these features, this specification defines
-- an extensible debug system architecture, covering both hardware and host software,
-- templates with well-defined interfaces for debug and trace IP blocks ("debug modules"),
-- a set of common debug modules for the most frequent run-control debug and tracing tasks,
-- a host-side software programming interface (API) for debug tools to interact with an OSD-enabled debug system.
+
+* an extensible debug system architecture, covering both hardware and host software,
+* templates with well-defined interfaces for debug and trace IP blocks ("debug modules"),
+* a set of common debug modules for the most frequent run-control debug and tracing tasks,
+* a host-side software programming interface (API) for debug tools to interact with an OSD-enabled debug system.
 
 In addition, implementations of many components described in the OSD specification are made available under a permissive open source license which can be used directly in custom designs.
 
