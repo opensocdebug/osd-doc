@@ -1,0 +1,5 @@
+# auto-generated PDF version of the SVG images
+/src/**/img/*.pdf
+
+# temporary files
+*.kate-swp
