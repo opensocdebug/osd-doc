@@ -98,13 +98,6 @@ numfig = True
 try:
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-
-    html_context = {
-        'css_files': [
-            '_static/theme_overrides.css', # override wide tables in RTD theme
-        ],
-    }
 except ImportError:
     sys.stderr.write('Warning: The Sphinx \'sphinx_rtd_theme\' HTML theme was '+
         'not found. Make sure you have the theme installed to produce pretty '+
@@ -198,3 +191,8 @@ highlight_language = 'guess'
 # -- Sphinx customizations -----------------------------------------------
 # We customize things here instead of in a separate script, because the changes
 # here are also applied when running on Read The Docs.
+
+
+def setup(app):
+    # override wide tables in RTD theme
+    app.add_stylesheet("theme_overrides.css")
