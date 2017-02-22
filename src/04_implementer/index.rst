@@ -9,5 +9,4 @@ This part of the documentation targets developers working on integrating Open So
 .. toctree::
    :maxdepth: 1
 
-   libopensocdebug/index
-   coding_guides/systemverilog.rst
+   styleguides/index.rst

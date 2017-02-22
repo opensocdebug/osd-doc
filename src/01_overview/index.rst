@@ -9,4 +9,3 @@ In this part of the documentation, we give an high-level overview of OSD.
    :maxdepth: 1
 
    getting_started/index
-   architecture_overview/index

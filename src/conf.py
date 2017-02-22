@@ -23,12 +23,18 @@ sys.path.insert(0, os.path.abspath('../sphinx'))
 # -- General configuration ------------------------------------------------
 
 # Minimum Sphinx version we require
-needs_sphinx = '1.3'
+needs_sphinx = '1.4.5'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 'breathe', 'rstFlatTable', 'sphinx.ext.todo', 'sphinx.ext.autodoc' ]
+extensions = [
+  'breathe',
+  'rstFlatTable',
+  'sphinx.ext.todo',
+  'sphinx.ext.autodoc',
+  'sphinx.ext.mathjax',
+]
 
 
 # Check if we run in one of the CI build environments
@@ -68,7 +74,7 @@ release = u'0.1'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -150,11 +156,31 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'opensocdebug.tex', u'Open SoC Debug Documentation Library',
+#    (master_doc, 'opensocdebug.tex', u'Open SoC Debug Documentation Library',
+#     u'The Open SoC Debug Contributors', 'manual'),
+
+    ('01_overview/index', 'osd-overview.tex', u'Open SoC Debug Overview',
+     u'The Open SoC Debug Contributors', 'manual'),
+
+    ('02_spec/index', 'osd-spec.tex', u'Open SoC Debug Specification',
+     u'The Open SoC Debug Contributors', 'manual'),
+
+    ('03_user/index', 'osd-userguide.tex', u'Open SoC Debug User Guides',
+     u'The Open SoC Debug Contributors', 'manual'),
+
+    ('04_implementer/index', 'osd-implementerguide.tex',
+     u'Open SoC Debug Implementer Guides',
      u'The Open SoC Debug Contributors', 'manual'),
 ]
 
-latex_toplevel_sectioning = 'part'
+latex_toplevel_sectioning = 'chapter'
+
+# show URLs in a footnote to make them available in printed documents
+latex_show_urls = 'footnote'
+
+latex_domain_indices = False
+
+latex_keep_old_macro_names = False
 
 
 # -- Options for manual page output ---------------------------------------

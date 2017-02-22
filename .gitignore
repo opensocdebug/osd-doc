@@ -3,3 +3,11 @@
 
 # temporary files
 *.kate-swp
+
+# python-related
+__pycache__
+/.venv
+
+# build output
+/build
+
