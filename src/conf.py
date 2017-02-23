@@ -16,6 +16,7 @@ import sys
 import os
 import subprocess
 import re
+from datetime import datetime
 
 # Add in-tree extensions to path
 sys.path.insert(0, os.path.abspath('../sphinx'))
@@ -57,7 +58,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Open SoC Debug'
-copyright = u'2016, The Open SoC Debug Contributors'
+copyright = u'2016-%d, The Open SoC Debug Contributors' % datetime.now().year
 author = u'The Open SoC Debug Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
