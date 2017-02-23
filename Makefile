@@ -1,4 +1,9 @@
-# Minimal makefile for Sphinx documentation
+# Build the OSD Documentation
+#
+# Note: this Makefile is *not* used by Read The Docs, it exec()'s the conf.py
+# file directly. Hence, all special build steps here are only relevant for
+# local builds, not for RTD builds. Add all build steps which should be executed
+# in RTD builds as Python code into the conf.py file.
 #
 
 # You can set these variables from the command line.
@@ -42,6 +47,9 @@ clean-images:
 
 clean: .venv Makefile clean-images
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+distclean:
+	-rm -rf .venv build sphinx/__pycache__
 
 
 .PHONY: help Makefile
