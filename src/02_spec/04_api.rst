@@ -33,9 +33,9 @@ Open SoC Debug Base Registers
 
 All base registers are 16 bit wide.
 
-.. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
+.. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.50\linewidth-2\tabcolsep}|
 .. flat-table:: Open SoC Debug base register map
-  :widths: 2 2 6
+  :widths: 2 3 5
   :header-rows: 1
 
   * - address
@@ -92,6 +92,9 @@ Module Vendor Identifier (``MOD_VENDOR``)
 The module vendor identifier is a 16 bit value.
 Vendor identifiers MUST be assigned by the Open SoC Debug project before they can be used.
 The Open SoC Debug project SHALL provide a publicly accessible list of all known vendors.
+
+.. note::
+  A list of assigned vendor IDs is available online at :ref:`sec:idregistry:vendorids`.
 
 
 Control and Status (``MOD_CS``)
