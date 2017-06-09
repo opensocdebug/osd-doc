@@ -28,8 +28,8 @@ help: .venv
 .venv:
 	echo Creating Python venv for Sphinx build
 	python3 -m venv .venv
-	.venv/bin/pip install --upgrade pip
-	.venv/bin/pip install -r requirements.txt
+	.venv/bin/pip -q install --upgrade pip
+	.venv/bin/pip -q install -r requirements.txt
 
 .SECONDEXPANSION:
 $(IMAGES_PDF): %.pdf : $$(subst $$(BUILDDIR),$$(SOURCEDIR),%).svg
