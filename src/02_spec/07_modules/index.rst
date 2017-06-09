@@ -7,8 +7,8 @@ Open SoC Debug specifies a set of modules with commonly used functionality.
    :maxdepth: 1
 
    him/index
-   ham/index
    scm/index
+   ham/index
    mam/index
    stm/index
    cdm/index
