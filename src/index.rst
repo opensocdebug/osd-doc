@@ -19,6 +19,8 @@ They are written for developers using OSD to debug software.
 
 The :doc:`Implementer Guides <04_implementer/index>` aim at people who want to integrate OSD into their own SoC designs, or want to develop software for an OSD-enabled SoC.
 
+The :doc:`Identifier Registry <05_idregistry/index>` lists all vendor identifiers used by OSD devices and products.
+
 .. toctree::
    :maxdepth: 1
    :caption: Documentation Parts
@@ -28,4 +30,5 @@ The :doc:`Implementer Guides <04_implementer/index>` aim at people who want to i
    02_spec/index
    03_user/index
    04_implementer/index
+   05_idregistry/index
    license
