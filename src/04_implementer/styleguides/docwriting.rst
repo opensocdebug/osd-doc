@@ -14,12 +14,12 @@ rST does not have strict rules regarding the formatting of section headers.
 To keep things consistent, we follow the rules recommended by the `Python Style Guide <https://docs.python.org/devguide/documenting.html#sections>`_.
 That is:
 
--   # with overline, for parts
--  * with overline, for chapters
--  =, for sections
--  -, for subsections
--  ^, for subsubsections
--  ", for paragraphs
+- ``#`` with overline, for parts
+- ``*`` with overline, for chapters
+- ``=``, for sections
+- ``-``, for subsections
+- ``^``, for subsubsections
+- ``"``, for paragraphs
 
 Tables
 ------
