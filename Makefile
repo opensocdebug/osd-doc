@@ -17,9 +17,8 @@ SVG2PDF       = inkscape
 SVG2PDF_FLAGS =
 
 # Build a list of SVG files to convert to PDFs
-#PDFs := $(foreach dir, $(IMAGEDIRS), $(patsubst %.svg,%.pdf,$(wildcard $(SOURCEDIR)/$(dir)/*.svg)))
-IMAGES_SVG := $(shell find $(SOURCEDIR) -name '*.svg')
-IMAGES_PDF := $(IMAGES_SVG:.svg=.pdf)
+IMAGES_SVG_REL := $(shell find $(SOURCEDIR) -iname '*.svg' -printf '%P\n')
+IMAGES_PDF := $(addprefix $(BUILDDIR)/,$(IMAGES_SVG_REL:.svg=.pdf))
 
 
 # Put it first so that "make" without argument is like "make help".
@@ -32,7 +31,9 @@ help: .venv
 	.venv/bin/pip install --upgrade pip
 	.venv/bin/pip install -r requirements.txt
 
-%.pdf : %.svg
+.SECONDEXPANSION:
+$(IMAGES_PDF): %.pdf : $$(subst $$(BUILDDIR),$$(SOURCEDIR),%).svg
+	mkdir -p $(@D)
 	$(SVG2PDF) -f $< -A $@
 
 # Convert images from SVG to PDF for LaTeX PDF output
