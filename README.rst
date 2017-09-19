@@ -9,7 +9,7 @@ View the documentation
 ----------------------
 
 You can view the documentation generated from this repository online at
-http://opensocdebug.readthedocs.org.
+https://opensocdebug.readthedocs.org.
 
 
 Build the documentation
