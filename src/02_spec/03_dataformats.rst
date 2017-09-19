@@ -54,40 +54,23 @@ A Debug Packet consists of a multiple words as described in the table below.
     - Description
 
   * - 0
-    - ``DP_HEADER_1``
-    - Debug Packet header (1)
+    - ``DEST``
+    - Packet destination address
 
   * - 1
-    - ``DP_HEADER_2``
-    - Debug Packet header (2)
+    - ``SRC``
+    - Packet source address
 
-  * - 2 .. *packet size*
+  * - 2
+    - ``FLAGS``
+    - Packet flags
+
+  * - 3 .. *packet size*
     - ``PAYLOAD``
     - Payload (content) of the Debug Packet
 
 .. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.70\linewidth-2\tabcolsep}|
-.. flat-table:: Field Reference: ``DP_HEADER_1``
-  :widths: 1 2 7
-  :header-rows: 1
-
-  * - Bit(s)
-    - Field
-    - Description
-
-  * - 15:10
-    - ``RES``
-    - **Reserved for future use**
-
-      This field is reserved for future use, e.g. to support prioritized packets, packet IDs or extended formats. Implementations MUST ignore the contents of this field.
-
-  * - 9:0
-    - ``DEST``
-    - **Packet Destination**
-
-      Address of the module in the Debug Interconnect to which this packet should be delivered.
-
-.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.70\linewidth-2\tabcolsep}|
-.. flat-table:: Field Reference: ``DP_HEADER_2``
+.. flat-table:: Field Reference: ``FLAGS``
   :widths: 1 2 7
   :header-rows: 1
 
@@ -123,10 +106,11 @@ A Debug Packet consists of a multiple words as described in the table below.
       Allowed values depend on the ``TYPE`` field.
 
   * - 9:0
-    - ``SRC``
-    - **Packet Source**
+    - ``RESERVED``
+    - **Reserved**
 
-      Address of the module in the Debug Interconnect from which this Debug Packet was sent.
+      Reserved space for future extensions.
+      Senders must set this field to zero, receivers must ignore its contents.
 
 
 Register access (``TYPE == REG``)
