@@ -43,16 +43,16 @@ All base registers are 16 bit wide.
     - description
 
   * - 0x0000
-    - ``MOD_ID``
-    - module type identifier
-
-  * - 0x0001
-    - ``MOD_VERSION``
-    - module version
-
-  * - 0x0002
     - ``MOD_VENDOR``
     - module vendor
+
+  * - 0x0001
+    - ``MOD_TYPE``
+    - module type identifier
+
+  * - 0x0002
+    - ``MOD_VERSION``
+    - module version
 
   * - 0x0003
     - ``MOD_CS``
@@ -62,30 +62,10 @@ All base registers are 16 bit wide.
     - ``MOD_EVENT_DEST``
     - destination of debug events
 
-Module type identifier (``MOD_ID``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Address: 0x0000
-- Reset Value: implementation defined
-- Access: read-only
-
-The module type identifier describes the module type.
-It is assigned by the module vendor.
-The combination of ``MOD_ID`` and ``MOD_VENDOR`` must be descriptive for a given debug module across all conforming implementations.
-
-Module Version (``MOD_VERSION``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Address: 0x0001
-- Reset Value: implementation defined
-- Access: read-only
-
-The versions are plain numbers that identify the module version.
-The module version can be used by the host software to adapt the communication protocol to the API specific to a module version.
-A module's API MUST NOT change in incompatible ways as long as the same module version is used.
-
 
 Module Vendor Identifier (``MOD_VENDOR``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Address: 0x0002
+- Address: 0x0000
 - Reset Value: implementation defined
 - Access: read-only
 
@@ -96,6 +76,26 @@ The Open SoC Debug project SHALL provide a publicly accessible list of all known
 .. note::
   A list of assigned vendor IDs is available online at :ref:`sec:idregistry:vendorids`.
 
+
+Module type identifier (``MOD_TYPE``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Address: 0x0001
+- Reset Value: implementation defined
+- Access: read-only
+
+The module type identifier describes the module type.
+It is assigned by the module vendor.
+The combination of ``MOD_VENDOR`` and ``MOD_TYPE`` must be descriptive for a given debug module across all conforming implementations.
+
+Module Version (``MOD_VERSION``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Address: 0x0002
+- Reset Value: implementation defined
+- Access: read-only
+
+The versions are plain numbers that identify the module version.
+The module version can be used by the host software to adapt the communication protocol to the API specific to a module version.
+A module's API MUST NOT change in incompatible ways as long as the same module version is used.
 
 Control and Status (``MOD_CS``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
