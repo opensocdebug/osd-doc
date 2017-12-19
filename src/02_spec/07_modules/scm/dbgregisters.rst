@@ -15,19 +15,19 @@ The reset values are listed below.
     - reset value
 
   * - 0x0000
-    - ``MOD_ID``
-    - module type identifier
-    - 0x0001
-
-  * - 0x0001
-    - ``MOD_VERSION``
-    - module version
-    - 0x0000
-
-  * - 0x0002
     - ``MOD_VENDOR``
     - module vendor
     - 0x0001
+
+  * - 0x0001
+    - ``MOD_TYPE``
+    - module type identifier
+    - 0x0001
+
+  * - 0x0002
+    - ``MOD_VERSION``
+    - module version
+    - 0x0000
 
   * - 0x0003
     - ``MOD_CS``
@@ -52,23 +52,23 @@ Additionally, it implements the following control registers for module-specific 
     - name
     - description
 
-  * - ``0x0200``
+  * - 0x0200
     - ``SYSTEM_VENDOR_ID``
     - Vendor ID
 
-  * - ``0x0201``
+  * - 0x0201
     - ``SYSTEM_DEVICE_ID``
     - Device ID
 
-  * - ``0x0202``
+  * - 0x0202
     - ``NUM_MOD``
     - Debug module count
 
-  * - ``0x0203``
+  * - 0x0203
     - ``MAX_PKT_LEN``
     - Maximum packet length
 
-  * - ``0x0204``
+  * - 0x0204
     - ``SYSRST``
     - System Reset
 
