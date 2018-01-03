@@ -37,7 +37,7 @@ The reset values are listed below.
   * - 0x0004
     - ``MOD_EVENT_DEST``
     - destination of debug events
-    - impl.-specific
+    - 0x0000 (unused, read-only)
 
 Additionally, it implements the following control registers for MAM-specific functionality.
 
@@ -53,11 +53,11 @@ Additionally, it implements the following control registers for MAM-specific fun
 
   * - 0x0200
     - ``AW``
-    - address width of the attached memory in bits
+    - address width of the attached memory in bits. Must be a multiple of 8.
 
   * - 0x0201
     - ``DW``
-    - data width of the attached memory in bits
+    - data width of the attached memory in bits. Must be a multiple of 8.
 
   * - 0x0202
     - ``REGIONS``

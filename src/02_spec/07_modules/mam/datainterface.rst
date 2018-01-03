@@ -1,74 +1,111 @@
 Programmer Interface: Data
 --------------------------
 
-Reading and writing of the memory happens through a MAM-specific protocol.
-Each data transfer can either be a read or a write access.
-Both chunk (bulk) and single word accesses are supported.
-Before being sent over the debug interconnect, a transfer is split into one or multiple NoC packets.
+Reading and writing of the memory happens through a MAM-specific protocol inside DI packets of type ``EVENT``.
+Data transfers can either be a read or a write access.
+Both burst and single word accesses are supported.
 
-MAM Transfer Structure
-^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: img/mam_data_transfer_structure.*
+   :alt: MAM data transfer encapsulation
+   :name: fig:mam_data_transfer_structure
 
-All transfers start with a Transfer Header.
+   MAM data transfer encapsulation
 
-.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
-.. flat-table:: Transfer Header Structure
-  :widths: 1 3 6
+:numref:`Figure %s <fig:mam_data_transfer_structure>` shows how data, which should be written to or read from a memory address is encapsulated.
+
+In a first step, a **MAM Transfer Request** is formed, which consists of a header, the address to write to/read from, and (for write accesses) the data itself.
+In a second step, the MAM Transfer Request is split into parts each not exceeding the maximum payload size of the Debug Interconnect.
+Out of each of the resulting chunks a DI Packet of type ``EVENT`` is created.
+
+In case of read accesses or acknowledged (synchronous) write accesses, a response is sent from the MAM to the source of the MAM Transfer Request.
+
+In the following, we first explaing the structure of the different types of MAM transfers, and then its packetization into DI Packets.
+
+MAM Transfer Request
+^^^^^^^^^^^^^^^^^^^^
+
+A MAM Transfer Request is used to read or write *s* bytes of data, starting at the byte address *addr*.
+
+.. note::
+
+  The address *addr* must be word-aligned according to the data width ``DW``.
+  To access non-aligned data the byte-select field ``SELSIZE`` can be used.
+
+A transfer request is structured as a sequence of bytes, consisting of a header, the memory byte address, and (in case of a write request) the write data.
+The structure of a MAM Transfer Request is given below.
+
+The following variables are used:
+
+- ``AW`` and ``DW`` are the address and data width, respectively, of the memory.
+  The values for these variables can be read from the MAM control registers.
+- *s* is the number of bytes to transfer.
+- *a* is the size of a memory address in bytes, calculated as *a* = ``AW`` / 8.
+
+.. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.50\linewidth-2\tabcolsep}|
+.. flat-table:: Structure of a MAM Transfer Request
+  :widths: 2 3 5
   :header-rows: 1
 
-  * - Index
-    - Name
-    - Description
+  * - byte
+    - name
+    - description
+
+  * - :cspan:`2` **MAM Transfer Request Header**
 
   * - 0
-    - HDR
-    - Header
+    - ``HDR0``
+    - MAM Transfer Request Header (part 1)
 
   * - 1
-    - ADDR[AW-1 : AW-16]
-    - write/read address (most significant two bytes)
+    - ``HDR1``
+    - MAM Transfer Request Header (part 2)
 
-  * - 2 .. (n-1)
+  * - :cspan:`2` **Address**
+
+  * - 2
+    - ``ADDR(0)``
+    - most significant byte of the read/write address, i.e. ``addr[AW-1 : AW-8]``
+
+  * - ...
     - ...
     - ...
 
-  * - n
-    - ADDR[15 : 0]
-    - write/read address (least significant two bytes)
+  * - 1 + *a*
+    - ``ADDR(a-1)``
+    - least significant byte of the read/write address, i.e. ``addr[7 : 0]``
 
-In read transfers (HDR.WE = 0), the transfer is complete after the Transfer Header.
-In write transfers (HDR.WE = 1), the Transfer Header is immediately followed by the Transfer Write Data.
+  * - :cspan:`2` **Write Data**
 
-.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
-.. flat-table:: Transfer Write Data Structure
-  :widths: 1 3 6
-  :header-rows: 1
+  * - 1 + *a* + 1
+    - ``D(0)``
+    - the first data byte to be transferred, to be written to address *addr*.
 
-  * - 0
-    - D0[DW-1 : DW-16]
-    - Most significant two bytes of the first data word
+  * - 1 + *a* + 2
+    - ``D(1)``
+    - the second data byte to be transferred, to be written to address (*addr* + 1).
 
-  * - x
-    - D0[DW-1 : DW-16]
-    - Most significant two bytes of the first data word
+  * - ...
+    - ...
+    - ...
 
+  * - 1 + *a* + *s*
+    - ``D(s-1)``
+    - the last data byte to be transferred, to be written to address (*addr* + *s* - 1).
 
-Transfer Header (HDR)
-"""""""""""""""""""""
+MAM Transfer Request Header, Part 1 (HDR0)
+""""""""""""""""""""""""""""""""""""""""""
 
-The transfer header describes the content of the data transfer.
-
-.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
-.. flat-table:: Field Reference: HDR
-  :widths: 1 3 6
+.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.70\linewidth-2\tabcolsep}|
+.. flat-table:: Field Reference: ``HDR0``
+  :widths: 1 2 7
   :header-rows: 1
 
   * - Bit(s)
     - Field
     - Description
 
-  * - 15
-    - WE
+  * - 7
+    - ``WE``
     - **Write Enable**
 
       **0: Read**
@@ -77,24 +114,20 @@ The transfer header describes the content of the data transfer.
       **1: Write**
         write to memory
 
-  * - 14
-    - CHUNK
-    - **Chunk or Single Word Access Mode**
+  * - 6
+    - ``BURST``
+    - **Burst or Single Word Access Mode**
 
-      This flag switches between chunk (bulk) and single word access.
+      This flag switches between burst and single word access.
 
       **0: Single Word Access**
         Use single word access.
-        In this mode, ADDR describes the address of the word to be accessed.
 
-      **1: Chunk Access**
+      **1: Burst Access**
         Read or write from a continuous region of memory.
-        In this mode, ADDR describes the first word to be accessed.
 
-        Chunk accesses are limited to 2\ :sup:`12` = 4,096 words per transfer.
-
-  * - 13
-    - SYNC
+  * - 5
+    - ``SYNC``
     - **Use Synchronous Writes**
 
       **0: Asynchronous Writes**
@@ -104,139 +137,103 @@ The transfer header describes the content of the data transfer.
         the newly written data.
 
       **1: Synchronous Writes**
-        Synchronous writes are acknowledged by the MAM. See the section below
-        for details.
+        Synchronous writes are acknowledged by the MAM.
+        The acknowledgement is an empty read response.
 
-  * - 12:0
+  * - 4:0
+    - ``RESERVED``
+    - **Reserved for future extensions**
+
+MAM Transfer Request Header, Part 2 (HDR1)
+""""""""""""""""""""""""""""""""""""""""""
+
+.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.70\linewidth-2\tabcolsep}|
+.. flat-table:: Field Reference: ``HDR1``
+  :widths: 1 2 7
+  :header-rows: 1
+
+  * - Bit(s)
+    - Field
+    - Description
+
+  * - 7:0
     - SELSIZE
     - **Burst Size/Byte Select**
 
-      This field has a different meaning depending on the value of the CHUNK
-      field.
+      This field has a different meaning depending on the value of the ``HDR0.BURST`` field.
 
-      **If CHUNK = 1: Burst Size**
-        The number of 16 bit words that make up the burst.
+      **If HDR0.BURST = 1: Burst Size**
+        The number of words the transfer consists of, i.e. (*s* / ``DW``).
 
-        .. todo:: Is it really 16 bit words, or is the target word size used?
+      **If HDR0.BURST = 0: Byte Select**
+        Only relevant for writes (``HDR0.WE`` = 1): byte select.
+        ``SELSIZE`` contains a bit mask, a data byte is only written if a corresponding bit in the mask is set to 1.
+        For example, set ``SELSIZE[0] := 1`` to write ``D0``.
 
-      **If CHUNK = 0: Byte Select**
-        The byte to access in single word access mode.
+MAM Transfer Response
+^^^^^^^^^^^^^^^^^^^^^
 
-        .. todo:: Detailled MAM Byte Select specification is missing.
-          Not yet supported in the reference implementation.
+.. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.50\linewidth-2\tabcolsep}|
+.. flat-table:: Structure of a MAM Transfer Response
+  :widths: 2 3 5
+  :header-rows: 1
 
+  * - byte
+    - name
+    - description
 
+  * - :cspan:`2` **Read Data**
 
+  * - 1 + *a* + 1
+    - ``D(0)``
+    - the first data byte read from the memory at address *addr*.
 
-Synchronous Writes
-^^^^^^^^^^^^^^^^^^
+  * - 1 + *a* + 2
+    - ``D(1)``
+    - the second data byte read from the memory at address (*addr* + 1).
 
-.. todo::
-  specify the guarantees that synchronous modes gives (where did the data arrive when the ACK is sent?)
+  * - ...
+    - ...
+    - ...
 
-If synchronous mode is selected, a ACK packet is sent after the last
-word has been written. An ACK packet is equal to a read packet with no
-content.
+  * - 1 + *a* + *s*
+    - ``D(s-1)``
+    - the last data byte read from the memory at address (*addr* + *s* - 1).
 
 
 Packetization
 ^^^^^^^^^^^^^
 
-Before sending over the Debug NoC to the MAM, NoC packets must be created out of a Transfer.
-The packets must be of type PLAIN and must consist of no more than MAX_PACKET_LENGTH flits (including the packet header).
+A MAM Transfer (both request and response) is packetized into DI event packets for transmission over the debug interconnect.
+Towards this goal, a MAM Transfer is split into chunks of each (MAX_PAYLOAD_LEN * 2) bytes.
+Each such chunk is sent as ``PAYLOAD`` in a DI packet.
 
-.. todo::
-  link to the definition of the MAX_PACKET_LENGTH variable and the PLAIN data transfer type.
+The maximum number of payload words in a Debug Packet (``MAX_PAYLOAD_LEN``) can be determined by reading the ``MAX_PKT_LEN`` register of the SCM module and subtracting 3 to account for the header words.
 
-.. tabularcolumns:: |p{\dimexpr 0.10\linewidth-2\tabcolsep}|p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
+The following fields in the header of the DI packet are set:
+
+- ``FLAGS.TYPE`` is set to ``EVENT``
+- ``FLAGS.TYPE_SUB`` is set to 0
+
+
+.. tabularcolumns:: |p{\dimexpr 0.30\linewidth-2\tabcolsep}|p{\dimexpr 0.70\linewidth-2\tabcolsep}|
 .. flat-table:: MAM Packet Structure
-  :widths: 1 3 6
+  :widths: 3 7
   :header-rows: 1
 
-  * - Flit
-    - Name
-    - Description
+  * - payload word
+    - description
 
   * - 0
-    - PKG_HDR
-    - Packet Header. TYPE must be set to PLAIN.
+    - [15 : 8] := ``D(0)``, [7 : 0] := ``D(1)``
 
   * - 1
-    - T0
-    - First word of the transfer (index = 0)
+    - [15 : 8] := ``D(2)``, [7 : 0] := ``D(3)``
 
-  * - *n* - 1
-    - T\ *n*
-    - *n*\ th word of the transfer (index = *n*)
+  * - ...
+    - ...
 
-All packets except the last one should be of size MAX_PACKET_LENGTH to reduce overhead.
+  * - ``MAX_PAYLOAD_LEN`` - 1
+    - ...
 
-
-Examples
-^^^^^^^^
-.. note::
-  The following examples are informal and not part of the specification.
-
-An examplary write sequence of a chunk of four data items with data
-width 64-bit and address width 32-bit is the sequence:
-
-::
-
-    0xc004=1100 0000 0000 0100
-    Addr[31:16]
-    Addr[15:0]
-    D0[63:48]
-    D0[47:32]
-    D0[31:16]
-    D0[15:0]
-    D1[63:48]
-    D1[47:32]
-    D1[31:16]
-    D1[15:0]
-    D2[63:48]
-    D2[47:32]
-    D2[31:16]
-    D2[15:0]
-    D3[63:48]
-    D3[47:32]
-    D3[31:16]
-    D3[15:0]
-
-This sequence will write ``D0`` to ``Addr``, ``D1`` to ``Addr+1``,
-``D2`` to ``Addr+2`` and ``D3`` to ``Addr+3``.
-
-If the maximum packet size in the debug interconnect is 8, this is the
-packet sequence with minimum number of packets:
-
-::
-
-    (dest=MAM_ID)
-    (type=PLAIN,src=0)
-    0xc004
-    Addr[31:16]
-    Addr[15:0]
-    D0[63:48]
-    D0[47:32]
-    D0[31:16]
-
-    (dest=MAM_ID)
-    (type=PLAIN,src=0)
-    D0[15:0]
-    D1[63:48]
-    D1[47:32]
-    D1[31:16]
-    D1[15:0]
-    D2[63:48]
-
-    (dest=MAM_ID)
-    (type=PLAIN,src=0)
-    D2[47:32]
-    D2[31:16]
-    D2[15:0]
-    D3[63:48]
-    D3[47:32]
-    D3[31:16]
-
-    (dest=MAM_ID)
-    (type=PLAIN,src=0)
-    D3[15:0]
+All packets except the last one should be of size ``MAX_PKT_LEN`` to reduce overhead.
