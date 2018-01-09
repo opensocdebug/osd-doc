@@ -38,6 +38,7 @@ The following variables are used:
 
 - ``AW`` and ``DW`` are the address and data width, respectively, of the memory.
   The values for these variables can be read from the MAM control registers.
+  The protocol supports address and data width values of 16, 32 and 64 bit.
 - *s* is the number of bytes to transfer.
 - *a* is the size of a memory address in bytes, calculated as *a* = ``AW`` / 8.
 

@@ -1,7 +1,7 @@
 Programmer Interface: Control Registers
 ---------------------------------------
 
-The System Control Module implements the :ref:`sec:spec:api:base_register_map`.
+The Memory Access Module implements the :ref:`sec:spec:api:base_register_map`.
 The reset values are listed below.
 
 .. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.40\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|
@@ -53,11 +53,13 @@ Additionally, it implements the following control registers for MAM-specific fun
 
   * - 0x0200
     - ``AW``
-    - address width of the attached memory in bits. Must be a multiple of 8.
+    - address width of the attached memory in bits.
+      Valid values are 16, 32 and 64.
 
   * - 0x0201
     - ``DW``
-    - data width of the attached memory in bits. Must be a multiple of 8.
+    - data width of the attached memory in bits.
+      Valid values are 16, 32 and 64.
 
   * - 0x0202
     - ``REGIONS``

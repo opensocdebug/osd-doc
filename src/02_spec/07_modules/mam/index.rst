@@ -12,14 +12,6 @@ Typical use cases include the initialization of a memory with a program, or the 
 
 The module is either connected to the system memory, other memory blocks, or the last level cache.
 
-.. todo::
-  be a bit more clear about what the following means, especially when mixing in sync write requests
-
-In the presence of write-back caches the memory
-access may be required to be guarded by a run-control triggered forced
-writeback if necessary.
-
-
 .. toctree::
    :maxdepth: 1
 
