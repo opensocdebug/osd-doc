@@ -1,7 +1,7 @@
 Programmer Interface: Control Registers
 ---------------------------------------
 
-The System Control Module implements the :ref:`sec:spec:api:base_register_map`.
+The Subnet Control Module implements the :ref:`sec:spec:api:base_register_map`.
 The reset values are listed below.
 
 .. tabularcolumns:: |p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|p{\dimexpr 0.40\linewidth-2\tabcolsep}|p{\dimexpr 0.20\linewidth-2\tabcolsep}|
@@ -108,8 +108,8 @@ Debug module count (``NUM_MOD``)
 - Reset Value: *implementation specific*
 - Access: read-only
 
-The number of debug modules in addition to the HIM and SCM modules.
-Since all module addresses must be continguous, this value also describes the highest module address available in the debug system as ``NUM_MOD`` + 1.
+The number of debug modules, including the SCM module itself (which is always assigned address 0 in the subnet).
+Since all module addresses must be continguous, this value also describes the highest module address available in the debug system as ``NUM_MOD`` - 1.
 
 
 Maximum packet length (``MAX_PKT_LEN``)

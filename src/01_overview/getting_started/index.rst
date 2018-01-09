@@ -243,7 +243,7 @@ attached on the right side) consists of a single-core CPU, a memory and
 a bus interconnect. To this functional system the debug modules are
 attached.
 
--  The System Control Module (SCM) module allows to control the system
+-  The Subnet Control Module (SCM) module allows to control the system
    remotely: reset the system, halt the system, reset the CPUs, etc.
 -  The Core Debug Module (CDM) provides all functionality expected from
    a run-control debug system: setting breakpoints and reading CPU

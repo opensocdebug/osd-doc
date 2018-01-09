@@ -1,17 +1,15 @@
-System Control Module (SCM)
+Subnet Control Module (SCM)
 ===========================
 
 .. figure:: ../../img/debug_module_scm.*
-   :alt: System Control Module
+   :alt: Subnet Control Module
    :name: fig:debug_module_scm
 
-   System Control Module
+   Subnet Control Module
 
-The *System Control Module (SCM)* is always mapped to address ``1`` on
-the debug interconnect (``0`` is the host/HIM address). The host first
-queries the SCM to provide system information, like a system identifier,
-the number of debug modules, or the maximum packet length.
-Beside that it can be used to control the system.
+The *Subnet Control Module (SCM)* is always mapped to the local address 0 in a subnet of the DI.
+The SCM provides an description of the subnet (such as its vendor or the number of debug modules available in the subnet).
+In addition, the SCM can be used to control the whole subnet, like resetting and starting or stopping its CPUs.
 
 .. toctree::
    :maxdepth: 1
