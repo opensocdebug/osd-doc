@@ -16,13 +16,13 @@ All registers are accessed through Debug Packets of ``TYPE == REG``.
 Debug module base address map
 -----------------------------
 
-+---------------------------+-----------------------------------+
-| Address Range             | Description                       |
-+===========================+===================================+
-| ``0x0000`` - ``0x01ff``   | Open SoC Debug Base Registers     |
-+---------------------------+-----------------------------------+
-| ``0x0200`` - ``0xffff``   | Module-specific registers         |
-+---------------------------+-----------------------------------+
++-------------------------+-------------------------------+
+| Address Range           | Description                   |
++=========================+===============================+
+| ``0x0000`` - ``0x01ff`` | Open SoC Debug Base Registers |
++-------------------------+-------------------------------+
+| ``0x0200`` - ``0xffff`` | Module-specific registers     |
++-------------------------+-------------------------------+
 
 All debug modules MUST implement the Open SoC Debug base registers.
 
@@ -78,7 +78,7 @@ The Open SoC Debug project SHALL provide a publicly accessible list of all known
 
 
 Module type identifier (``MOD_TYPE``)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - Address: 0x0001
 - Reset Value: implementation defined
 - Access: read-only
