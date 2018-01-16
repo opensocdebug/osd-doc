@@ -25,13 +25,13 @@ The following fields in the header of the DI packet are set:
     - description
 
   * - 0
-    - ``id``
-
-  * - 1
     - ``timestamp[15:0]``
 
-  * - 2
+  * - 1
     - ``timestamp[31:16]``
+
+  * - 2
+    - ``id``
 
   * - 3
     - ``value[15:0]``
