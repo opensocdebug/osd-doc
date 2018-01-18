@@ -1,15 +1,23 @@
 Core Trace Module (CTM)
 =======================
 
-The *Core Trace Module (CTM)* captures trace events generated from the
-processor core. The implementation is core-dependent and will be highly
-configurable. Such trace events are core-internal signals, like the
-completion of an instruction, the branch predictor status, memory access
-delays, cache miss rates, just to name a few possibilities.
+The *Core Trace Module (CTM)* captures trace events generated from the processor core, and sends them in compressed form as event packets.
 
-The CTM specification will define a few basic trace events and how they
-can efficiently packed, because such events are usually generated with a
-high rate.
+Which events are available depends on the observed processor core.
+Typically the following events are traced:
 
-.. todo::
-  Not really specified yet.
+- executed instructions (instruction trace)
+- branch predictor status
+- memory access delays
+- cache miss rates
+
+.. note::
+   The CTM module is in a very early preview state and has significant limitations.
+   It currently focuses on function call traces and has been tested only on RISC-V and or1k (OpenRISC) ISAs.
+   No trace compression mechanisms are employed.
+
+.. toctree::
+   :maxdepth: 1
+
+   dbgregisters
+   datainterface
