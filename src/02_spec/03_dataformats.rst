@@ -476,6 +476,43 @@ Event Debug Packets (``EVENT``)
 
 Debug Events are Debug Packets sent by a debug module without being explicitly triggered by the host or by another module.
 The main purpose of Debug Events is to transport trace data, but they can also be used for other purposes.
+Hence this specification does not attempt to specify the payload of event packets strictly.
+
+.. flat-table:: Reference of Debug Packet subtypes for event packets
+  :header-rows: 1
+
+  * - Field Name
+    - ``TYPE_SUB`` Value
+    - Description
+
+  * - ``EV_LAST``
+    - 0b0000
+    - Standalone event packet, or in split event transmissions, the last packet in the transmission
+
+  * - ``EV_CONT``
+    - 0b0001
+    - A non-last event packet in a split event transmission
+
+  * - ``EV_OVERFLOW``
+    - 0b0005
+    - An overflow happened
+
+
+Split Event Transmissions
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All event packets must set the ``TYPE`` field of a Debug Packet to ``EVENT``.
+Event packets must be not larger then the maximum packet length, which can be obtained from the SCM module.
+If payload should be transmitted which is larger than the maximum DI packet size the payload can be "split" into two or more packets.
+In this case, all but the last event packets set ``TYPE_SUB`` to ``1``,
+
+For the ``TYPE_SUB``
 The field ``TYPE_SUB`` and the packet payload are defined by the debug module itself.
+
+Overflows
+^^^^^^^^^
+
+If the debug system is overloaded, events may be dropped by the producer.
+If this happens, the producer counts the dropped packet and sents an overflow packet once it is able to transmit again.
+The overflow packet contains the number of dropped packets as only data word.
+Overflow packets have ``TYPE_SUB`` set to ``OVERFLOW``.
