@@ -17,7 +17,7 @@ The following fields in the header of the DI packet are set:
 
 
 .. tabularcolumns:: |p{\dimexpr 0.40\linewidth-2\tabcolsep}|p{\dimexpr 0.60\linewidth-2\tabcolsep}|
-.. flat-table:: STM Trace Packet Structure
+.. flat-table:: CTM Trace Packet Structure
   :widths: 4 6
   :header-rows: 1
 
