@@ -80,7 +80,7 @@ All debug components must conform to the DII when accessing the Debug Interconne
   * - ``last``
     - master
     - 1
-    - Set to 0b1 by the master to indicate that ``data`` is the last word in a Debug Packet. Set to 0b1 otherwise.
+    - Set to 0b1 by the master to indicate that ``data`` is the last word in a Debug Packet. Set to 0b0 otherwise.
 
   * - ``valid``
     - master
