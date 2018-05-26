@@ -1,7 +1,7 @@
 System Interface
 ----------------
 
-The following signals are required from the OR1K CPU core in order to interface to the CDM-OR1K module: 
+The following signals are required from the CPU core in order to interface to the CDM module: 
 
 +-----------------+----------+---------------+------------------------------------------------+
 | Signal          | Width    | Direction     | Description                                    |

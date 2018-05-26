@@ -1,15 +1,15 @@
 Programmer Interface: Data
 --------------------------
 
-The CDM-OR1K module generates only one type of event packets: **CPU debug stall packets**. 
-These packets contain the data in the form of ``reason`` payload word.
+The CDM module generates only one type of event packets: **CPU debug stall packets**. 
+These packets contain the data in the form of ``stall`` payload word.
 
 CPU Debug Stall packet
 ^^^^^^^^^^^^^^^^^^^^^^
 
 A CPU Debug Stall Packet encapsulates a breakpoint or watchpoint event. 
-Whenever the program counter in the CPU core matches with the watchpoint/breakpoint address, CPU is stalled and this event packet is generated. 
-It notifies the debugger, i.e. GDB about a breakpoint or watchpoint hit.  
+Whenever the program counter in the CPU core matches with the watchpoint/breakpoint address, CPU core stalls and this event packet is generated. 
+It notifies the debugger, i.e. GDB that CPU has reached a breakpoint or watchpoint condition and the CPU core is stalled.  
 
 The following fields in the header of the DI packet are set:
 
@@ -26,15 +26,6 @@ The following fields in the header of the DI packet are set:
     - description
 
   * - 0
-    - ``reason``
+    - ``stall``
    
-      Indicates the cause of the event generation.
-      It can be a breakpoint or watchpoint hit.
-      Bits 16-15 indicates the state of the event generation.
-      '10' indicates watchpoint hit and '11' indicates breakpoint hit.
-      
-      
-       
-		      
-	         
-
+      Bit '0': Logic 1 indicates the debugger that the CPU core is stalled.
