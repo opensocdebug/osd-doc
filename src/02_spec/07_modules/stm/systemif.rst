@@ -46,7 +46,7 @@ trace events.
 In the hardware implementation the writeback stage must be observed and
 whenever a write to register ``r3`` is observed, the same value is
 stored into the register ``value``. When completion of an ``l.nop``
-operation is observed, the opeand ``K`` (if not equal to 0) and the
+operation is observed, the operand ``K`` (if not equal to 0) and the
 ``value`` are emitted on the trace port for one cycle.
 
 Finally, the following extension is required to support the trace event
