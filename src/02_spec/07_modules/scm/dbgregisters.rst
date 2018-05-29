@@ -120,10 +120,7 @@ Maximum packet length (``MAX_PKT_LEN``)
 - Access: read-only
 
 Maximum length of debug packets in 16 bit words, including all headers.
-
-.. todo::
-  Specify minimum required value.
-
+``MAX_PKT_LEN`` must be at least 12 to enable the transmission of all register access packets within one packet.
 
 System reset (``SYSRST``)
 ^^^^^^^^^^^^^^^^^^^^^^^^^

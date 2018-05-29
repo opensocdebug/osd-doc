@@ -32,12 +32,11 @@ For some types the payload format is strictly specified, while other types can b
 Length Limitations
 ------------------
 
-Each debug packet consists of at least two 16 bit wide words.
+Each debug packet consists of at least three 16 bit wide words.
 A packet MUST NOT consist of more than :math:`2^{16}-1 = 65535 \text{ words}`, including all headers.
-Implementations MAY impose a lower limit, but the limit may not be less than 8 words.
+Implementations MAY impose a lower limit, but the limit may not be less than 12 words.
 
-.. todo::
-  how to make this discoverable?
+The maximum packet length within a subnet can be determined by reading the ``MAX_PKT_LEN`` register from the SCM module.
 
 Debug Packet Structure
 ----------------------
