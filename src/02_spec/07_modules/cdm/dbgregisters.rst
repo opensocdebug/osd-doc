@@ -60,6 +60,11 @@ Additionally, the CDM implements the following registers.
     - 16
     - Most significant bits of the SPR address (see below)
 
+  * - 0x0202
+    - ``CORE_DATA_WIDTH``
+    - 16
+    - Register data width of the attached CPU core in bits
+
   * - 0x8000-0xFFFF
     -
     - 32
@@ -93,8 +98,8 @@ Core Control Register (``CORE_CTRL``)
 
   * - 0
     - ``STALL``
-    - *impl.-spec.*
     - r/w
+    - *impl.-spec.*
     - **Core Stall**
 
       Stall the attached CPU core.
@@ -116,6 +121,18 @@ Core Upper Register (``CORE_REG_UPPER``)
 
 The most significant bit of the SPR register address.
 See the section "Access to core registers" for more details.
+
+
+Core Data Width (``CORE_DATA_WIDTH``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Address: 0x0202
+- Reset Value: 0
+- Data Width: 16 bit
+- Access: read-write
+
+The register width of the CPU core (in bits) the CDM module is connected to. 
+Valid values are 16, 32 and 64 and 128.
 
 
 Access to core registers
