@@ -13,3 +13,4 @@ Open SoC Debug specifies a set of modules with commonly used functionality.
    stm/index
    cdm/index
    ctm/index
+   dem_uart/index
