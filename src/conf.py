@@ -150,9 +150,6 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-#    (master_doc, 'opensocdebug.tex', u'Open SoC Debug Documentation Library',
-#     u'The Open SoC Debug Contributors', 'manual'),
-
     ('01_overview/index', 'osd-overview.tex', u'Open SoC Debug Overview',
      u'The Open SoC Debug Contributors', 'manual'),
 
@@ -164,6 +161,11 @@ latex_documents = [
 
     ('04_implementer/index', 'osd-implementerguide.tex',
      u'Open SoC Debug Implementer Guides',
+     u'The Open SoC Debug Contributors', 'manual'),
+
+    # The last document is the one and only one made available by RTD
+    (master_doc, 'opensocdebug.tex',
+     u'Open SoC Debug Documentation Library',
      u'The Open SoC Debug Contributors', 'manual'),
 ]
 
