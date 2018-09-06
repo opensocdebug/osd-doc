@@ -23,7 +23,7 @@ help: .venv
 	.venv/bin/pip -q install --upgrade pip
 	.venv/bin/pip -q install -r requirements.txt
 
-clean: .venv Makefile clean-images
+clean: .venv Makefile
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 distclean:
