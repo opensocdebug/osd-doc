@@ -13,14 +13,6 @@ SPHINXPROJ    = OpenSoCDebug
 SOURCEDIR     = src
 BUILDDIR      = build
 
-SVG2PDF       = inkscape
-SVG2PDF_FLAGS =
-
-# Build a list of SVG files to convert to PDFs
-IMAGES_SVG_REL := $(shell find $(SOURCEDIR) -iname '*.svg' -printf '%P\n')
-IMAGES_PDF := $(addprefix $(BUILDDIR)/,$(IMAGES_SVG_REL:.svg=.pdf))
-
-
 # Put it first so that "make" without argument is like "make help".
 help: .venv
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
@@ -30,21 +22,6 @@ help: .venv
 	python3 -m venv .venv
 	.venv/bin/pip -q install --upgrade pip
 	.venv/bin/pip -q install -r requirements.txt
-
-.SECONDEXPANSION:
-$(IMAGES_PDF): %.pdf : $$(subst $$(BUILDDIR),$$(SOURCEDIR),%).svg
-	mkdir -p $(@D)
-	$(SVG2PDF) -f $< -A $@
-
-# Convert images from SVG to PDF for LaTeX PDF output
-images-pdf: $(IMAGES_PDF)
-
-# Convert images to PDF before running the LaTeX PDF build
-latexpdf: .venv Makefile images-pdf
-	@$(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-clean-images:
-	-rm $(IMAGES_PDF)
 
 clean: .venv Makefile clean-images
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

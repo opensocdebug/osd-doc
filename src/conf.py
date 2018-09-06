@@ -34,6 +34,7 @@ extensions = [
   'sphinx.ext.todo',
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
+  'cairosvgconverter',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
