@@ -23,8 +23,13 @@ We specify a Wishbone wrapper interface below.
 .. figure:: img/bus_write_diagram.*
    :alt: A typical write cycle
 
+   A typical write cycle
+
+
 .. figure:: img/bus_read_diagram.*
    :alt: A typical read cycle
+
+   A typical read cycle
 
 A new request is made by asserting ``bus_req``, unless ``bus_req`` is asserted, no other signal is valid.
 ``bus_write`` indicates whether it is a read (0) or a write (1) request.
@@ -37,8 +42,9 @@ Finally ``bus_ack`` is asserted to confirm the request and end the cycle.
 ``bus_rdata`` is only valid when ``bus_ack`` is asserted and ``bus_write`` is negated.
 
 
-Wishbone Bus
-------------
+Wishbone Bus Interface
+^^^^^^^^^^^^^^^^^^^^^^
+
 If a wishbone interface is present, it should wrap around the generic bus described above and take
 care of translating all the signals.
 The following signals MUST be present on a compatible WISHBONE bus.
@@ -63,4 +69,4 @@ The following signals MUST be present on a compatible WISHBONE bus.
 | ``wb_dat_o``    | 32          | DEM->CPU      | Data that was read from the register            |
 +-----------------+-------------+---------------+-------------------------------------------------+
 
-For more information see the `WISHBONE specification <https://cdn.opencores.org/downloads/wbspec_b3.pdf>`_
+For more information see the `Wishbone B3 specification <https://cdn.opencores.org/downloads/wbspec_b3.pdf>`_
