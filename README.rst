@@ -23,7 +23,6 @@ Build requirements
 
 Additionally to build PDFs
 
-- Inkscape (to convert images to PDF)
 - A texlive installation
 
 If you're using Debian or Ubuntu, run
@@ -34,7 +33,7 @@ If you're using Debian or Ubuntu, run
   apt-get install python3 python3-venv python3-pip
 
   # to build PDFs
-  apt-get install inkscape latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+  apt-get install latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
 
 Building
 ~~~~~~~~
