@@ -149,21 +149,26 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    ('01_overview/index', 'osd-overview.tex', u'Open SoC Debug Overview',
-     u'The Open SoC Debug Contributors', 'manual'),
+latex_documents = []
+if not read_the_docs_build:
+    latex_documents += [
+        ('01_overview/index', 'osd-overview.tex', u'Open SoC Debug Overview',
+         u'The Open SoC Debug Contributors', 'manual'),
 
-    ('02_spec/index', 'osd-spec.tex', u'Open SoC Debug Specification',
-     u'The Open SoC Debug Contributors', 'manual'),
+        ('02_spec/index', 'osd-spec.tex', u'Open SoC Debug Specification',
+         u'The Open SoC Debug Contributors', 'manual'),
 
-    ('03_user/index', 'osd-userguide.tex', u'Open SoC Debug User Guides',
-     u'The Open SoC Debug Contributors', 'manual'),
+        ('03_user/index', 'osd-userguide.tex', u'Open SoC Debug User Guides',
+         u'The Open SoC Debug Contributors', 'manual'),
 
-    ('04_implementer/index', 'osd-implementerguide.tex',
-     u'Open SoC Debug Implementer Guides',
-     u'The Open SoC Debug Contributors', 'manual'),
+        ('04_implementer/index', 'osd-implementerguide.tex',
+         u'Open SoC Debug Implementer Guides',
+         u'The Open SoC Debug Contributors', 'manual'),
+    ]
 
-    # The last document is the one and only one made available by RTD
+# ReadTheDocs only supports a single PDF document, make the combined doc
+# available.
+latex_documents += [
     (master_doc, 'opensocdebug.tex',
      u'Open SoC Debug Documentation Library',
      u'The Open SoC Debug Contributors', 'manual'),
